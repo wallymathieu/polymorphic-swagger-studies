@@ -4,7 +4,7 @@ using SomeBasicFileStoreApp.Core.Commands;
 
 namespace Web.V1.Models
 {
-    ///
+    //[JsonPolymorphic(UnknownDerivedTypeHandling = JsonUnknownDerivedTypeHandling.FallBackToBaseType)]
     public class AddProduct
     {
         /// 

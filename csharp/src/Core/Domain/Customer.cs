@@ -2,20 +2,15 @@
 
 namespace SomeBasicFileStoreApp.Core
 {
-    public class Customer
+    public record Customer(int Id, Names Name, int Version)
     {
-        public Customer(int id, string firstName, string lastName, int version)
+        public static Customer Create(int id, string firstName, string lastName, int version)
         {
-            Id = id;
-            Name=new Names(firstName,lastName);
-            Version = version;
+            return new Customer(
+            Id: id,
+            Name: new Names(firstName,lastName),
+            Version: version);
         }
-
-        public int Id { get; }
-        
-        public int Version { get; }
-        
-        public Names Name { get; }
     }
 
     public class Names

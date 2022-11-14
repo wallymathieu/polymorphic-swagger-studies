@@ -1,6 +1,5 @@
 using System.Linq;
 using SomeBasicFileStoreApp.Core.Commands;
-using With.Collections;
 using Xunit;
 
 namespace SomeBasicFileStoreApp.Tests
@@ -31,11 +30,10 @@ namespace SomeBasicFileStoreApp.Tests
         [Fact]
         public void Order()
         {
-            Batches.SelectMany(b => b).Pairwise(((last, current) =>
-            {
+            var pairs = Batches.SelectMany(b => b).Pairwise();
+            foreach (var (last,current) in pairs ){
                 Assert.True(current.SequenceNumber>last.SequenceNumber, "current.SequenceNumber>last.SequenceNumber");
-                return "Success";
-            })).ToArray();
+            }
         }
     }
 }
