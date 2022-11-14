@@ -1,0 +1,16 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <TargetFramework>net6</TargetFramework>
+    <RootNamespace>SomeBasicFileStoreApp.Core</RootNamespace>
+  </PropertyGroup>
+  <PropertyGroup>
+    <ProjectGuid>{FE5250C5-0FC2-443A-91B8-F1758176937C}</ProjectGuid>
+    <RootNamespace>SomeBasicFileStoreApp.Core</RootNamespace>
+  </PropertyGroup>
+  <ItemGroup>
+    <PackageReference Include="FSharp.Core" Version="4.7.0" />
+    <PackageReference Include="Newtonsoft.Json" Version="13.0.1" />
+    <PackageReference Include="With" Version="5.1.1" />
+    <PackageReference Include="protobuf-net" Version="2.4.0" />
+  </ItemGroup>
+</Project>
