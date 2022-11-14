@@ -1,5 +1,6 @@
 using System.Linq;
 using SomeBasicFileStoreApp.Core.Commands;
+using WallyMathieu.Collections;
 using Xunit;
 
 namespace SomeBasicFileStoreApp.Tests
