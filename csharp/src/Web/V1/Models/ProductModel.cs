@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using SomeBasicFileStoreApp.Core;
 
 namespace Web.V1.Models
@@ -6,13 +7,17 @@ namespace Web.V1.Models
     {
         public static ProductModel Map(Product arg)
         {
-            return new ProductModel()
+            return new ProductModel
             {
                 Name = arg.Name,
                 Id = arg.Id,
-                Cost = arg.Cost
+                Cost = arg.Cost,
+                Properties = arg.Properties,
             };
         }
+
+        public IDictionary<ProductProperty,string> Properties { get; set; }
+
         public int Id { get; set; }
 
         public float Cost { get; set; }

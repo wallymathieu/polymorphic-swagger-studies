@@ -1,3 +1,13 @@
-﻿namespace SomeBasicFileStoreApp.Core;
+﻿using System.Collections.Generic;
 
-public record Product(int Id, float Cost, string Name, int Version);
+namespace SomeBasicFileStoreApp.Core;
+
+public record Product(int Id, float Cost, string Name, int Version, IDictionary<ProductProperty,string> Properties);
+
+public enum ProductProperty
+{
+    Height,
+    Length,
+    Width,
+    Weight,
+}
