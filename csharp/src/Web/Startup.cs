@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Reflection;
+using System.Text.Json;
+using System.Text.Json.Serialization;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc;
@@ -35,6 +37,7 @@ namespace Web
         public void ConfigureServices(IServiceCollection services)
         {
             _swagger.ConfigureServices(services);
+            
             services.AddSingleton<PersistCommandsHandler>();
             services.AddSingleton<IRepository, Repository>();
             services.AddSingleton<Func<DateTime>>(_ => () => DateTime.UtcNow);
@@ -50,7 +53,10 @@ namespace Web
                 services.AddSingleton<IAppendBatch, ProtoAppendToFile>(_ => new ProtoAppendToFile(protoFile));
             }
 
-            services.AddControllers().AddApplicationPart(typeof(Startup).Assembly);
+            services.AddControllers().AddApplicationPart(typeof(Startup).Assembly).AddJsonOptions(opts =>
+            {
+                opts.JsonSerializerOptions.Converters.Add(new JsonStringEnumConverter());
+            });
 
             services.Configure<ApiBehaviorOptions>(options =>
             {
@@ -131,7 +137,9 @@ namespace Web
         public virtual void ConfigureServices(IServiceCollection services)
         {
             services.AddSwaggerExamplesFromAssemblyOf<Startup>();
-            services.AddSwaggerGen(c => { c.ExampleFilters(); });
+            services.AddSwaggerGen(c => {
+                c.ExampleFilters();
+            });
 
             services.ConfigureSwaggerGen(options =>
             {
