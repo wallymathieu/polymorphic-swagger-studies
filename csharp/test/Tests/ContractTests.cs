@@ -11,6 +11,7 @@ using Microsoft.Extensions.Configuration;
 using Newtonsoft.Json.Linq;
 using SomeBasicFileStoreApp.Core;
 using Web;
+using Web.V1.Models;
 using Xunit;
 
 namespace SomeBasicFileStoreApp.Tests;
@@ -66,7 +67,7 @@ public class ContractTests:IClassFixture<ApiFixture>
         using var client = _fixture.Server.CreateClient();
         var createProductResponse = await client.PostAsync("/api/v1/products",
             new StringContent(@"{
-                        ""$type"": ""product2"",
+                        ""$type"": """+nameof(AddProduct2)+ @""",
                         ""name"": ""TestProduct2"",
                         ""cost"": 10,
                         ""Properties"": {

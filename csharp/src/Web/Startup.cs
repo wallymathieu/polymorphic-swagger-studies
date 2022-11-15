@@ -160,8 +160,8 @@ namespace Web
                 });
                 options.UseAllOfForInheritance();
                 options.UseOneOfForPolymorphism();
-                //options.SelectDiscriminatorNameUsing((baseType) => "$type");
-                //options.SelectDiscriminatorValueUsing((subType) => subType.Name);
+                options.SelectDiscriminatorNameUsing((baseType) => "$type");
+                options.SelectDiscriminatorValueUsing((subType) => subType.Name);
                 options.SelectSubTypesUsing(GetSubTypes);
                 //Set the comments path for the swagger json and ui.
                 var xmlPath = Path.Combine(Directory.GetParent(webAssembly.Location).ToString(),
