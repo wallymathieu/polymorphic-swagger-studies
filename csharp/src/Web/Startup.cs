@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Reflection;
@@ -149,7 +150,11 @@ namespace Web
                         Name = "Dev", Email = "developers@somecompany.com", Url = new Uri("https://somecompany.com")
                     }
                 });
-
+                options.UseAllOfForInheritance();
+                options.UseOneOfForPolymorphism();
+                //options.SelectDiscriminatorNameUsing((baseType) => "$type");
+                //options.SelectDiscriminatorValueUsing((subType) => subType.Name);
+                options.SelectSubTypesUsing(GetSubTypes);
                 //Set the comments path for the swagger json and ui.
                 var xmlPath = Path.Combine(Directory.GetParent(webAssembly.Location).ToString(),
                     webAssembly.GetName().Name + ".xml");
@@ -158,6 +163,13 @@ namespace Web
                 else
                     Console.Error.WriteLine($"Could not find xml {xmlPath}");
             });
+        }
+
+        private static IEnumerable<Type> GetSubTypes(Type baseType)
+        {
+            return typeof(Program).Assembly.GetTypes()
+                //.Union(typeof(Product).Assembly.GetTypes())
+                .Where(type => type.IsSubclassOf(baseType));
         }
     }
 }
