@@ -126,10 +126,10 @@ namespace Web
             // Enable middleware to serve generated Swagger as a JSON endpoint
             app.UseSwagger(c => { c.RouteTemplate = "swagger/{documentName}/swagger.json"; });
 
-            app.UseSwaggerUI(c =>
+            app.UseReDoc(c =>
             {
-                c.SwaggerEndpoint("/swagger/v1/swagger.json", "API");
-                c.EnableDeepLinking();
+                c.RoutePrefix = "docs";
+                c.SpecUrl("/swagger/v1/swagger.json");
             });
         }
 
