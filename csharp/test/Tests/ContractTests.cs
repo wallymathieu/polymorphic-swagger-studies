@@ -67,7 +67,7 @@ public class ContractTests:IClassFixture<ApiFixture>
         using var client = _fixture.Server.CreateClient();
         var createProductResponse = await client.PostAsync("/api/v1/products",
             new StringContent(@"{
-                        ""$type"": """+nameof(AddProduct2)+ @""",
+                        ""version"": ""v2"",
                         ""name"": ""TestProduct2"",
                         ""cost"": 10,
                         ""Properties"": {

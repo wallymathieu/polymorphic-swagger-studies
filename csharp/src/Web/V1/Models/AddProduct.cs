@@ -6,8 +6,9 @@ using SomeBasicFileStoreApp.Core.Commands;
 
 namespace Web.V1.Models;
 
-[JsonPolymorphic(UnknownDerivedTypeHandling = JsonUnknownDerivedTypeHandling.FallBackToBaseType)]
-[JsonDerivedType(typeof(AddProduct2), typeDiscriminator: nameof(AddProduct2))]
+[JsonPolymorphic(UnknownDerivedTypeHandling = JsonUnknownDerivedTypeHandling.FallBackToBaseType, 
+    TypeDiscriminatorPropertyName = "version")]
+[JsonDerivedType(typeof(AddProduct2), typeDiscriminator: "v2")]
 public class AddProduct
 {
     /// 

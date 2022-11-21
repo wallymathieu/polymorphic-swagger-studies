@@ -1,8 +1,12 @@
 using System.Collections.Generic;
+using System.Text.Json.Serialization;
 using SomeBasicFileStoreApp.Core;
 
 namespace Web.V1.Models
 {
+    [JsonPolymorphic(UnknownDerivedTypeHandling = JsonUnknownDerivedTypeHandling.FallBackToBaseType, 
+        TypeDiscriminatorPropertyName = "version")]
+    [JsonDerivedType(typeof(ProductModelV2), typeDiscriminator: "v2")]
     public class ProductModel
     {
         public int Id { get; set; }
@@ -21,16 +25,13 @@ namespace Web.V1.Models
                     Cost = arg.Cost,
                     Properties = arg.Properties,
                 }
-                :new ProductModelV1
+                :new ProductModel
                 {
                     Name = arg.Name,
                     Id = arg.Id,
                     Cost = arg.Cost,
                 };
         }
-    }
-    public class ProductModelV1: ProductModel
-    {
     }
     public class ProductModelV2: ProductModel
     {
