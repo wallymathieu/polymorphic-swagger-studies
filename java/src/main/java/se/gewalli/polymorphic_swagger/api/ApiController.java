@@ -10,7 +10,9 @@ import org.springframework.web.context.request.NativeWebRequest;
 import se.gewalli.polymorphic_swagger.CommandsHandler;
 import se.gewalli.polymorphic_swagger.commands.Command;
 import se.gewalli.polymorphic_swagger.data.Repository;
+import se.gewalli.polymorphic_swagger.entities.Customer;
 import se.gewalli.polymorphic_swagger.entities.Order;
+import se.gewalli.polymorphic_swagger.entities.Product;
 import se.gewalli.polymorphic_swagger.model.AddOrder;
 import se.gewalli.polymorphic_swagger.model.AddProduct;
 import se.gewalli.polymorphic_swagger.model.AddProductToOrder;
@@ -18,7 +20,14 @@ import se.gewalli.polymorphic_swagger.model.CreateCustomer;
 import se.gewalli.polymorphic_swagger.model.CustomerModel;
 import se.gewalli.polymorphic_swagger.model.OrderModel;
 import se.gewalli.polymorphic_swagger.model.ProductModel;
-import  se.gewalli.polymorphic_swagger.commands.AddProductToOrderCommand;
+import se.gewalli.polymorphic_swagger.commands.AddProductToOrderCommand;
+import se.gewalli.polymorphic_swagger.commands.AddCustomerCommand;
+import se.gewalli.polymorphic_swagger.commands.AddProductCommand;
+import se.gewalli.polymorphic_swagger.commands.AddOrderCommand;
+
+import java.time.Instant;
+import java.time.OffsetDateTime;
+import java.time.ZoneOffset;
 import java.util.List;
 import java.util.Optional;
 import java.util.concurrent.CompletableFuture;
@@ -46,68 +55,93 @@ public class ApiController implements Api {
     }
 
     @Override
-    public CompletableFuture<ResponseEntity<Void>> addOrder(@Valid AddOrder addOrder) {
-        // TODO Auto-generated method stub
-        return Api.super.addOrder(addOrder);
+    public CompletableFuture<ResponseEntity<Void>> addOrder(@Valid AddOrder body) {
+        Command command = new AddOrderCommand(0, 0, body.getCustomer(), Instant.now());
+        return commandsHandler.handle(command).thenApply(result -> result.fold(a -> new ResponseEntity<>(HttpStatus.OK),
+                err -> new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR)));
     }
 
     @Override
-    public CompletableFuture<ResponseEntity<Void>> addProduct(@Valid AddProduct apiV1ProductsGetRequest) {
-        // TODO Auto-generated method stub
-        return Api.super.addProduct(apiV1ProductsGetRequest);
+    public CompletableFuture<ResponseEntity<Void>> addProduct(@Valid AddProduct body) {
+        Command command = new AddProductCommand(0, 0, body.getCost().intValue(), body.getName());
+        return commandsHandler.handle(command).thenApply(result -> result.fold(a -> new ResponseEntity<>(HttpStatus.OK),
+                err -> new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR)));
     }
 
     @Override
     public CompletableFuture<ResponseEntity<Void>> addProductToOrder(Integer id,
             @Valid AddProductToOrder addProductToOrder) {
-      Command command = new AddProductToOrderCommand(0, 0, id, addProductToOrder.getProductId());
-        return commandsHandler.handle(command).thenApply(result ->
-                result.fold(a -> new ResponseEntity<>(HttpStatus.OK),
-                        err -> new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR)));
+        Command command = new AddProductToOrderCommand(0, 0, id, addProductToOrder.getProductId());
+        return commandsHandler.handle(command).thenApply(result -> result.fold(a -> new ResponseEntity<>(HttpStatus.OK),
+                err -> new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR)));
     }
 
     @Override
     public CompletableFuture<ResponseEntity<Void>> createCustomer(@Valid CreateCustomer createCustomer) {
-        // TODO Auto-generated method stub
-        return Api.super.createCustomer(createCustomer);
+        Command command = new AddCustomerCommand(0, 0, createCustomer.getFirstname(), createCustomer.getLastname());
+        return commandsHandler.handle(command).thenApply(result -> result.fold(a -> new ResponseEntity<>(HttpStatus.OK),
+                err -> new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR)));
     }
 
     @Override
     public CompletableFuture<ResponseEntity<CustomerModel>> getCustomer(Integer id) {
-        // TODO Auto-generated method stub
-        return Api.super.getCustomer(id);
+        return CompletableFuture
+                .supplyAsync(() -> repository.tryGetCustomer(id).map(this::mapToCustomerModel).map(ResponseEntity::ok)
+                        .orElse(ResponseEntity.status(HttpStatus.NOT_FOUND).body(null)));
     }
 
     @Override
     public CompletableFuture<ResponseEntity<List<CustomerModel>>> getCustomers() {
-        // TODO Auto-generated method stub
-        return Api.super.getCustomers();
-    }
-    private OrderModel mapToOrderModel(Order order){
-        return new OrderModel();
+        return CompletableFuture.supplyAsync(
+                () -> ResponseEntity.ok(repository.getCustomers().stream().map(this::mapToCustomerModel).toList()));
     }
 
     @Override
     public CompletableFuture<ResponseEntity<OrderModel>> getOrder(Integer id) {
-        return CompletableFuture.supplyAsync(()->repository.tryGetOrder(id).map( order-> this.mapToOrderModel(order) ).map(ResponseEntity::ok)
-                .orElse(ResponseEntity.status(HttpStatus.NOT_FOUND).body(null)));
+        return CompletableFuture
+                .supplyAsync(() -> repository.tryGetOrder(id).map(this::mapToOrderModel).map(ResponseEntity::ok)
+                        .orElse(ResponseEntity.status(HttpStatus.NOT_FOUND).body(null)));
     }
 
     @Override
     public CompletableFuture<ResponseEntity<List<OrderModel>>> getOrders() {
-        // TODO Auto-generated method stub
-        return Api.super.getOrders();
+        return CompletableFuture.supplyAsync(
+                () -> ResponseEntity.ok(repository.getOrders().stream().map(this::mapToOrderModel).toList()));
     }
 
     @Override
     public CompletableFuture<ResponseEntity<ProductModel>> getProduct(Integer id) {
-        // TODO Auto-generated method stub
-        return Api.super.getProduct(id);
+        return CompletableFuture
+                .supplyAsync(() -> repository.tryGetProduct(id).map(this::mapToProductModel).map(ResponseEntity::ok)
+                        .orElse(ResponseEntity.status(HttpStatus.NOT_FOUND).body(null)));
     }
 
     @Override
     public CompletableFuture<ResponseEntity<List<ProductModel>>> getProducts() {
-        // TODO Auto-generated method stub
-        return Api.super.getProducts();
+        return CompletableFuture.supplyAsync(
+                () -> ResponseEntity.ok(repository.getProducts().stream().map(this::mapToProductModel).toList()));
+    }
+
+    private OrderModel mapToOrderModel(Order order) {
+        return new OrderModel()
+                .id(order.id())
+                .customer(mapToCustomerModel(order.customer()))
+                .orderDate(OffsetDateTime.ofInstant(order.orderDate(), ZoneOffset.UTC))
+                .products(order.products().stream().map(this::mapToProductModel).toList());
+    }
+
+    private ProductModel mapToProductModel(Product product) {
+        return new ProductModel()
+                .cost(product.cost())
+                .id(product.id())
+                .name(product.name())
+                .version(String.valueOf(product.version()));
+    }
+
+    private CustomerModel mapToCustomerModel(Customer customer) {
+        return new CustomerModel()
+                .firstname(customer.firstName())
+                .lastname(customer.lastName())
+                .id(customer.id());
     }
 }
