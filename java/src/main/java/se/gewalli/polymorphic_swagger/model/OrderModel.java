@@ -1,26 +1,17 @@
 package se.gewalli.polymorphic_swagger.model;
 
-import java.net.URI;
 import java.util.Objects;
 import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.time.OffsetDateTime;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import org.openapitools.jackson.nullable.JsonNullable;
 import org.springframework.format.annotation.DateTimeFormat;
-import se.gewalli.polymorphic_swagger.model.ApiV1ProductsGet200ResponseInner;
-import se.gewalli.polymorphic_swagger.model.CustomerModel;
-import java.util.NoSuchElementException;
-import org.openapitools.jackson.nullable.JsonNullable;
-import java.time.OffsetDateTime;
 import javax.validation.Valid;
-import javax.validation.constraints.*;
 import io.swagger.v3.oas.annotations.media.Schema;
 
 
-import java.util.*;
 import javax.annotation.Generated;
 
 /**
@@ -42,7 +33,7 @@ public class OrderModel {
 
   @JsonProperty("products")
   @Valid
-  private JsonNullable<List<ApiV1ProductsGet200ResponseInner>> products = JsonNullable.undefined();
+  private JsonNullable<List<ProductModel>> products = JsonNullable.undefined();
 
   public OrderModel id(Integer id) {
     this.id = id;
@@ -101,12 +92,12 @@ public class OrderModel {
     this.orderDate = orderDate;
   }
 
-  public OrderModel products(List<ApiV1ProductsGet200ResponseInner> products) {
+  public OrderModel products(List<ProductModel> products) {
     this.products = JsonNullable.of(products);
     return this;
   }
 
-  public OrderModel addProductsItem(ApiV1ProductsGet200ResponseInner productsItem) {
+  public OrderModel addProductsItem(ProductModel productsItem) {
     if (this.products == null || !this.products.isPresent()) {
       this.products = JsonNullable.of(new ArrayList<>());
     }
@@ -120,11 +111,11 @@ public class OrderModel {
   */
   @Valid 
   @Schema(name = "products", required = false)
-  public JsonNullable<List<ApiV1ProductsGet200ResponseInner>> getProducts() {
+  public JsonNullable<List<ProductModel>> getProducts() {
     return products;
   }
 
-  public void setProducts(JsonNullable<List<ApiV1ProductsGet200ResponseInner>> products) {
+  public void setProducts(JsonNullable<List<ProductModel>> products) {
     this.products = products;
   }
 

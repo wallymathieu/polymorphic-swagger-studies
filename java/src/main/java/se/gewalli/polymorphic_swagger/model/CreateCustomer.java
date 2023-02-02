@@ -1,17 +1,11 @@
 package se.gewalli.polymorphic_swagger.model;
 
-import java.net.URI;
 import java.util.Objects;
 import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.annotation.JsonCreator;
-import org.openapitools.jackson.nullable.JsonNullable;
-import java.time.OffsetDateTime;
-import javax.validation.Valid;
 import javax.validation.constraints.*;
 import io.swagger.v3.oas.annotations.media.Schema;
 
 
-import java.util.*;
 import javax.annotation.Generated;
 
 /**
@@ -26,6 +20,12 @@ public class CreateCustomer {
 
   @JsonProperty("firstname")
   private String firstname;
+  public CreateCustomer(){}
+
+  public CreateCustomer(String firstname, String lastname) {
+    this.firstname = firstname;
+    this.lastname = lastname;
+  }
 
   public CreateCustomer lastname(String lastname) {
     this.lastname = lastname;

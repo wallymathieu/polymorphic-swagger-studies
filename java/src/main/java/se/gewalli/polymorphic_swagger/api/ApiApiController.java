@@ -2,8 +2,6 @@ package se.gewalli.polymorphic_swagger.api;
 
 import se.gewalli.polymorphic_swagger.model.AddOrder;
 import se.gewalli.polymorphic_swagger.model.AddProductToOrder;
-import se.gewalli.polymorphic_swagger.model.ApiV1ProductsGet200ResponseInner;
-import se.gewalli.polymorphic_swagger.model.ApiV1ProductsGetRequest;
 import se.gewalli.polymorphic_swagger.model.CreateCustomer;
 import se.gewalli.polymorphic_swagger.model.CustomerModel;
 import java.util.Map;

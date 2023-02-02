@@ -6,14 +6,14 @@
 package se.gewalli.polymorphic_swagger.api;
 
 import se.gewalli.polymorphic_swagger.model.AddOrder;
+import se.gewalli.polymorphic_swagger.model.AddProduct;
 import se.gewalli.polymorphic_swagger.model.AddProductToOrder;
-import se.gewalli.polymorphic_swagger.model.ApiV1ProductsGet200ResponseInner;
-import se.gewalli.polymorphic_swagger.model.ApiV1ProductsGetRequest;
 import se.gewalli.polymorphic_swagger.model.CreateCustomer;
 import se.gewalli.polymorphic_swagger.model.CustomerModel;
 import java.util.Map;
 import se.gewalli.polymorphic_swagger.model.OrderModel;
 import se.gewalli.polymorphic_swagger.model.ProblemDetails;
+import se.gewalli.polymorphic_swagger.model.ProductModel;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.Parameters;
@@ -374,9 +374,9 @@ public interface ApiApi {
         tags = { "Products" },
         responses = {
             @ApiResponse(responseCode = "200", description = "Success", content = {
-                @Content(mediaType = "text/plain", schema = @Schema(implementation = ApiV1ProductsGet200ResponseInner.class)),
-                @Content(mediaType = "application/json", schema = @Schema(implementation = ApiV1ProductsGet200ResponseInner.class)),
-                @Content(mediaType = "text/json", schema = @Schema(implementation = ApiV1ProductsGet200ResponseInner.class))
+                @Content(mediaType = "text/plain", schema = @Schema(implementation = ProductModel.class)),
+                @Content(mediaType = "application/json", schema = @Schema(implementation = ProductModel.class)),
+                @Content(mediaType = "text/json", schema = @Schema(implementation = ProductModel.class))
             })
         }
     )
@@ -385,7 +385,7 @@ public interface ApiApi {
         value = "/api/v1/products",
         produces = { "text/plain", "application/json", "text/json" }
     )
-    default CompletableFuture<ResponseEntity<List<ApiV1ProductsGet200ResponseInner>>> apiV1ProductsGet(
+    default CompletableFuture<ResponseEntity<List<ProductModel>>> apiV1ProductsGet(
         
     ) {
         return CompletableFuture.supplyAsync(()-> {
@@ -432,9 +432,9 @@ public interface ApiApi {
                 @Content(mediaType = "text/json", schema = @Schema(implementation = ProblemDetails.class))
             }),
             @ApiResponse(responseCode = "200", description = "Success", content = {
-                @Content(mediaType = "text/plain", schema = @Schema(implementation = ApiV1ProductsGet200ResponseInner.class)),
-                @Content(mediaType = "application/json", schema = @Schema(implementation = ApiV1ProductsGet200ResponseInner.class)),
-                @Content(mediaType = "text/json", schema = @Schema(implementation = ApiV1ProductsGet200ResponseInner.class))
+                @Content(mediaType = "text/plain", schema = @Schema(implementation = ProductModel.class)),
+                @Content(mediaType = "application/json", schema = @Schema(implementation = ProductModel.class)),
+                @Content(mediaType = "text/json", schema = @Schema(implementation = ProductModel.class))
             })
         }
     )
@@ -443,7 +443,7 @@ public interface ApiApi {
         value = "/api/v1/products/{id}",
         produces = { "text/plain", "application/json", "text/json" }
     )
-    default CompletableFuture<ResponseEntity<ApiV1ProductsGet200ResponseInner>> apiV1ProductsIdGet(
+    default CompletableFuture<ResponseEntity<ProductModel>> apiV1ProductsIdGet(
         @Parameter(name = "id", description = "", required = true) @PathVariable("id") Integer id
     ) {
         return CompletableFuture.supplyAsync(()-> {
@@ -500,7 +500,7 @@ public interface ApiApi {
         consumes = { "application/json", "text/json", "application/*+json" }
     )
     default CompletableFuture<ResponseEntity<Void>> apiV1ProductsPost(
-        @Parameter(name = "ApiV1ProductsGetRequest", description = "") @Valid @RequestBody(required = false) ApiV1ProductsGetRequest apiV1ProductsGetRequest
+        @Parameter(name = "ApiV1ProductsGetRequest", description = "") @Valid @RequestBody(required = false) AddProduct apiV1ProductsGetRequest
     ) {
         return CompletableFuture.completedFuture(new ResponseEntity<>(HttpStatus.NOT_IMPLEMENTED));
 

@@ -1,28 +1,19 @@
 package se.gewalli.polymorphic_swagger.model;
 
-import java.net.URI;
 import java.util.Objects;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonSubTypes;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
 import org.openapitools.jackson.nullable.JsonNullable;
-import se.gewalli.polymorphic_swagger.model.ProductModel;
 import se.gewalli.polymorphic_swagger.model.ProductModelV2;
-import java.util.NoSuchElementException;
-import com.fasterxml.jackson.annotation.JsonTypeName;
-import org.openapitools.jackson.nullable.JsonNullable;
-import java.time.OffsetDateTime;
 import javax.validation.Valid;
-import javax.validation.constraints.*;
 import io.swagger.v3.oas.annotations.media.Schema;
 
 
-import java.util.*;
 import javax.annotation.Generated;
 
 /**
@@ -40,7 +31,7 @@ import javax.annotation.Generated;
 })
 
 @Generated(value = "org.openapitools.codegen.languages.SpringCodegen", date = "2023-01-28T19:45:56.796705+02:00[Europe/Athens]")
-public class ProductModelV2 extends ProductModel implements ApiV1ProductsGet200ResponseInner {
+public class ProductModelV2 extends ProductModel {
 
   @JsonProperty("properties")
   @Valid

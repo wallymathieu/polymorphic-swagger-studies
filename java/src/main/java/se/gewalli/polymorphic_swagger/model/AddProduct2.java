@@ -1,27 +1,17 @@
 package se.gewalli.polymorphic_swagger.model;
 
-import java.net.URI;
 import java.util.Objects;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonSubTypes;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import java.math.BigDecimal;
 import java.util.HashMap;
 import java.util.Map;
-import se.gewalli.polymorphic_swagger.model.AddProduct;
 import se.gewalli.polymorphic_swagger.model.AddProduct2;
-import com.fasterxml.jackson.annotation.JsonTypeName;
-import org.openapitools.jackson.nullable.JsonNullable;
-import java.time.OffsetDateTime;
 import javax.validation.Valid;
 import javax.validation.constraints.*;
 import io.swagger.v3.oas.annotations.media.Schema;
-
-
-import java.util.*;
-import javax.annotation.Generated;
 
 /**
  * AddProduct2
@@ -37,8 +27,7 @@ import javax.annotation.Generated;
   @JsonSubTypes.Type(value = AddProduct2.class, name = "AddProduct2")
 })
 
-@Generated(value = "org.openapitools.codegen.languages.SpringCodegen", date = "2023-01-28T19:45:56.796705+02:00[Europe/Athens]")
-public class AddProduct2 extends AddProduct implements ApiV1ProductsGetRequest {
+public class AddProduct2 extends AddProduct {
 
   @JsonProperty("properties")
   @Valid
