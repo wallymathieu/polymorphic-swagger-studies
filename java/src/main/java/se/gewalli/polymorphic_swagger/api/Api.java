@@ -33,7 +33,7 @@ import java.util.concurrent.CompletableFuture;
 
 @Validated
 @Tag(name = "api", description = "the api API")
-public interface ApiApi {
+public interface Api {
 
     default Optional<NativeWebRequest> getRequest() {
         return Optional.empty();
@@ -61,7 +61,7 @@ public interface ApiApi {
         value = "/api/v1/customers",
         produces = { "text/plain", "application/json", "text/json" }
     )
-    default CompletableFuture<ResponseEntity<List<CustomerModel>>> apiV1CustomersGet(
+    default CompletableFuture<ResponseEntity<List<CustomerModel>>> getCustomers(
         
     ) {
         return CompletableFuture.supplyAsync(()-> {
@@ -119,7 +119,7 @@ public interface ApiApi {
         value = "/api/v1/customers/{id}",
         produces = { "text/plain", "application/json", "text/json" }
     )
-    default CompletableFuture<ResponseEntity<CustomerModel>> apiV1CustomersIdGet(
+    default CompletableFuture<ResponseEntity<CustomerModel>> getCustomer(
         @Parameter(name = "id", description = "", required = true) @PathVariable("id") Integer id
     ) {
         return CompletableFuture.supplyAsync(()-> {
@@ -172,7 +172,7 @@ public interface ApiApi {
         produces = { "text/plain", "application/json", "text/json" },
         consumes = { "application/json", "text/json", "application/*+json" }
     )
-    default CompletableFuture<ResponseEntity<Void>> apiV1CustomersPost(
+    default CompletableFuture<ResponseEntity<Void>> createCustomer(
         @Parameter(name = "CreateCustomer", description = "") @Valid @RequestBody(required = false) CreateCustomer createCustomer
     ) {
         return CompletableFuture.completedFuture(new ResponseEntity<>(HttpStatus.NOT_IMPLEMENTED));
@@ -201,7 +201,7 @@ public interface ApiApi {
         value = "/api/v1/orders",
         produces = { "text/plain", "application/json", "text/json" }
     )
-    default CompletableFuture<ResponseEntity<List<OrderModel>>> apiV1OrdersGet(
+    default CompletableFuture<ResponseEntity<List<OrderModel>>> getOrders(
         
     ) {
         return CompletableFuture.supplyAsync(()-> {
@@ -258,7 +258,7 @@ public interface ApiApi {
         value = "/api/v1/orders/{id}",
         produces = { "text/plain", "application/json", "text/json" }
     )
-    default CompletableFuture<ResponseEntity<OrderModel>> apiV1OrdersIdGet(
+    default CompletableFuture<ResponseEntity<OrderModel>> getOrder(
         @Parameter(name = "id", description = "", required = true) @PathVariable("id") Integer id
     ) {
         return CompletableFuture.supplyAsync(()-> {
@@ -313,7 +313,7 @@ public interface ApiApi {
         produces = { "text/plain", "application/json", "text/json" },
         consumes = { "application/json", "text/json", "application/*+json" }
     )
-    default CompletableFuture<ResponseEntity<Void>> apiV1OrdersIdProductsPost(
+    default CompletableFuture<ResponseEntity<Void>> addProductToOrder(
         @Parameter(name = "id", description = "order id", required = true) @PathVariable("id") Integer id,
         @Parameter(name = "AddProductToOrder", description = "") @Valid @RequestBody(required = false) AddProductToOrder addProductToOrder
     ) {
@@ -347,7 +347,7 @@ public interface ApiApi {
         produces = { "text/plain", "application/json", "text/json" },
         consumes = { "application/json", "text/json", "application/*+json" }
     )
-    default CompletableFuture<ResponseEntity<Void>> apiV1OrdersPost(
+    default CompletableFuture<ResponseEntity<Void>> addOrder(
         @Parameter(name = "AddOrder", description = "") @Valid @RequestBody(required = false) AddOrder addOrder
     ) {
         return CompletableFuture.completedFuture(new ResponseEntity<>(HttpStatus.NOT_IMPLEMENTED));
@@ -377,7 +377,7 @@ public interface ApiApi {
         value = "/api/v1/products",
         produces = { "text/plain", "application/json", "text/json" }
     )
-    default CompletableFuture<ResponseEntity<List<ProductModel>>> apiV1ProductsGet(
+    default CompletableFuture<ResponseEntity<List<ProductModel>>> getProducts(
         
     ) {
         return CompletableFuture.supplyAsync(()-> {
@@ -435,7 +435,7 @@ public interface ApiApi {
         value = "/api/v1/products/{id}",
         produces = { "text/plain", "application/json", "text/json" }
     )
-    default CompletableFuture<ResponseEntity<ProductModel>> apiV1ProductsIdGet(
+    default CompletableFuture<ResponseEntity<ProductModel>> getProduct(
         @Parameter(name = "id", description = "", required = true) @PathVariable("id") Integer id
     ) {
         return CompletableFuture.supplyAsync(()-> {
@@ -491,7 +491,7 @@ public interface ApiApi {
         produces = { "text/plain", "application/json", "text/json" },
         consumes = { "application/json", "text/json", "application/*+json" }
     )
-    default CompletableFuture<ResponseEntity<Void>> apiV1ProductsPost(
+    default CompletableFuture<ResponseEntity<Void>> addProduct(
         @Parameter(name = "ApiV1ProductsGetRequest", description = "") @Valid @RequestBody(required = false) AddProduct apiV1ProductsGetRequest
     ) {
         return CompletableFuture.completedFuture(new ResponseEntity<>(HttpStatus.NOT_IMPLEMENTED));
