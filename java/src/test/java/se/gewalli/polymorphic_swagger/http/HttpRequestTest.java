@@ -38,7 +38,7 @@ public class HttpRequestTest {
         customers.post(new CreateCustomer("Firstname", "Lastname")).execute();
         Response<List<CustomerModel>> exchange = customers.list().execute();
         assertEquals(HttpStatus.OK.value(), exchange.code());
-        assertEquals("Firstname", ((CustomerModel) exchange.body().get(0)).getFirstname());
+        assertEquals("Firstname", ((CustomerModel) exchange.body().get(0)).getFirstname().get());
     }
 
     @Test
@@ -46,7 +46,7 @@ public class HttpRequestTest {
         BigInteger id = customers.post(new CreateCustomer("Firstname", "Lastname")).execute().body().getId();
         Response<CustomerModel> exchange = customers.get(id).execute();
         assertEquals(HttpStatus.OK.value(), exchange.code());
-        assertEquals("Firstname", exchange.body().getFirstname());
+        assertEquals("Firstname", exchange.body().getFirstname().get());
     }
 
     @Test
@@ -63,7 +63,7 @@ public class HttpRequestTest {
         BigInteger id = products.post(new AddProduct(10, "product1")).execute().body().getId();
         Response<ProductModel> exchange = products.get(id).execute();
         assertEquals(HttpStatus.OK.value(), exchange.code());
-        assertEquals("product1", exchange.body().getName());
+        assertEquals("product1", exchange.body().getName().get());
     }
 
     @Test
@@ -77,7 +77,7 @@ public class HttpRequestTest {
         assertEquals(HttpStatus.OK.value(), exchange.code());
         OrderModel body = exchange.body();
         assertNotNull(body);
-        assertEquals("Firstname", body.getCustomer().getFirstname());
+        assertEquals("Firstname", body.getCustomer().getFirstname().get());
         assertEquals(1, body.getProducts().get().size());
     }
 }
