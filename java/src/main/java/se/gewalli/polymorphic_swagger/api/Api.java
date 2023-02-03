@@ -158,7 +158,7 @@ public interface Api {
     })
     @RequestMapping(method = RequestMethod.POST, value = "/api/v1/orders/{id}/products", produces = { "text/plain",
             "application/json", "text/json" }, consumes = { "application/json", "text/json", "application/*+json" })
-    CompletableFuture<ResponseEntity<Void>> addProductToOrder(
+    CompletableFuture<ResponseEntity<OrderModel>> addProductToOrder(
             @Parameter(name = "id", description = "order id", required = true) @PathVariable("id") BigInteger id,
             @Parameter(name = "AddProductToOrder", description = "") @Valid @RequestBody(required = false) AddProductToOrder addProductToOrder);
 

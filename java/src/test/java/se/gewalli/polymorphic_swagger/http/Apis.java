@@ -48,18 +48,18 @@ interface Customers {
 
 interface Orders {
     @Headers({"Accept: application/json"})
-    @GET("/api/orders")
+    @GET("/api/v1/orders")
     Call<List<OrderModel>> list();
 
     @Headers({"Accept: application/json"})
-    @GET("/api/orders/{id}")
+    @GET("/api/v1/orders/{id}")
     Call<OrderModel> get(@Path("id") BigInteger id);
 
     @Headers({"Accept: application/json"})
-    @POST("/api/orders")
+    @POST("/api/v1/orders")
     Call<OrderModel> post(@Body AddOrder createOrder);
 
     @Headers({"Accept: application/json"})
-    @POST("/api/orders/{id}/products")
+    @POST("/api/v1/orders/{id}/products")
     Call<OrderModel> addProduct(@Path("id") BigInteger id, @Body AddProductToOrder createOrder);
 }

@@ -69,7 +69,9 @@ public class HttpRequestTest {
     @Test
     public void testCanCreateAndGetOrder() throws Exception {
         BigInteger customerId = customers.post(new CreateCustomer("Firstname", "Lastname")).execute().body().getId();
-        BigInteger orderId = orders.post(new AddOrder(customerId)).execute().body().getId();
+        Response<OrderModel> orderResponse = orders.post(new AddOrder(customerId)).execute();
+        assertEquals(HttpStatus.OK.value(), orderResponse.code());
+        BigInteger orderId = orderResponse.body().getId();
         BigInteger productId = products.post(new AddProduct(10, "product1")).execute().body().getId();
         Response<OrderModel> productAddedResponse = orders.addProduct(orderId, new AddProductToOrder().productId(productId)).execute();
         assertEquals(HttpStatus.OK.value(), productAddedResponse.code());
