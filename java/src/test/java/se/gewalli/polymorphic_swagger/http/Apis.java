@@ -14,27 +14,28 @@ import se.gewalli.polymorphic_swagger.model.CustomerModel;
 import se.gewalli.polymorphic_swagger.model.OrderModel;
 import se.gewalli.polymorphic_swagger.model.ProductModel;
 
+import java.math.BigInteger;
 import java.util.List;
 
 interface Products {
-    @GET("/api/products")
+    @GET("/api/v1/products")
     Call<List<ProductModel>> list();
 
-    @GET("/api/products/{id}")
-    Call<ProductModel> get(@Path("id") int id);
+    @GET("/api/v1/products/{id}")
+    Call<ProductModel> get(@Path("id") BigInteger id);
 
-    @POST("/api/products")
+    @POST("/api/v1/products")
     Call<ProductModel> post(@Body AddProduct customer);
 }
 
 interface Customers {
-    @GET("/api/customers")
+    @GET("/api/v1/customers")
     Call<List<CustomerModel>> list();
 
-    @GET("/api/customers/{id}")
-    Call<CustomerModel> get(@Path("id") int id);
+    @GET("/api/v1/customers/{id}")
+    Call<CustomerModel> get(@Path("id") BigInteger id);
 
-    @POST("/api/customers")
+    @POST("/api/v1/customers")
     Call<CustomerModel> post(@Body CreateCustomer customer);
 }
 
@@ -43,11 +44,11 @@ interface Orders {
     Call<List<OrderModel>> list();
 
     @GET("/api/orders/{id}")
-    Call<OrderModel> get(@Path("id") int id);
+    Call<OrderModel> get(@Path("id") BigInteger id);
 
     @POST("/api/orders")
     Call<OrderModel> post(@Body AddOrder createOrder);
 
     @POST("/api/orders/{id}/products")
-    Call<OrderModel> addProduct(@Path("id") int id, @Body AddProductToOrder createOrder);
+    Call<OrderModel> addProduct(@Path("id") BigInteger id, @Body AddProductToOrder createOrder);
 }

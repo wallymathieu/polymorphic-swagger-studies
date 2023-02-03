@@ -20,13 +20,13 @@ import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.tags.Tag;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.context.request.NativeWebRequest;
 import javax.validation.Valid;
+
+import java.math.BigInteger;
 import java.util.List;
 import java.util.Optional;
 import java.util.concurrent.CompletableFuture;
@@ -40,462 +40,211 @@ public interface Api {
     }
 
     /**
-     * GET /api/v1/customers : 
+     * GET /api/v1/customers :
      *
      * @return Success (status code 200)
      */
-    @Operation(
-        operationId = "apiV1CustomersGet",
-        summary = "",
-        tags = { "Customers" },
-        responses = {
+    @Operation(operationId = "apiV1CustomersGet", summary = "", tags = { "Customers" }, responses = {
             @ApiResponse(responseCode = "200", description = "Success", content = {
-                @Content(mediaType = "text/plain", schema = @Schema(implementation = CustomerModel.class)),
-                @Content(mediaType = "application/json", schema = @Schema(implementation = CustomerModel.class)),
-                @Content(mediaType = "text/json", schema = @Schema(implementation = CustomerModel.class))
+                    @Content(mediaType = "text/plain", schema = @Schema(implementation = CustomerModel.class)),
+                    @Content(mediaType = "application/json", schema = @Schema(implementation = CustomerModel.class)),
+                    @Content(mediaType = "text/json", schema = @Schema(implementation = CustomerModel.class))
             })
-        }
-    )
-    @RequestMapping(
-        method = RequestMethod.GET,
-        value = "/api/v1/customers",
-        produces = { "text/plain", "application/json", "text/json" }
-    )
-    default CompletableFuture<ResponseEntity<List<CustomerModel>>> getCustomers(
-        
-    ) {
-        return CompletableFuture.supplyAsync(()-> {
-            getRequest().ifPresent(request -> {
-                for (MediaType mediaType: MediaType.parseMediaTypes(request.getHeader("Accept"))) {
-                    if (mediaType.isCompatibleWith(MediaType.valueOf("application/json"))) {
-                        String exampleString = "{ \"firstname\" : \"firstname\", \"id\" : 0, \"lastname\" : \"lastname\" }";
-                        ApiUtil.setExampleResponse(request, "application/json", exampleString);
-                        break;
-                    }
-                    if (mediaType.isCompatibleWith(MediaType.valueOf("text/json"))) {
-                        String exampleString = "Custom MIME type example not yet supported: text/json";
-                        ApiUtil.setExampleResponse(request, "text/json", exampleString);
-                        break;
-                    }
-                    if (mediaType.isCompatibleWith(MediaType.valueOf("text/plain"))) {
-                        String exampleString = "Custom MIME type example not yet supported: text/plain";
-                        ApiUtil.setExampleResponse(request, "text/plain", exampleString);
-                        break;
-                    }
-                }
-            });
-            return new ResponseEntity<>(HttpStatus.NOT_IMPLEMENTED);
-        }, Runnable::run);
+    })
+    @RequestMapping(method = RequestMethod.GET, value = "/api/v1/customers", produces = { "text/plain",
+            "application/json", "text/json" })
+    CompletableFuture<ResponseEntity<List<CustomerModel>>> getCustomers(
 
-    }
-
+    );
 
     /**
-     * GET /api/v1/customers/{id} : 
+     * GET /api/v1/customers/{id} :
      *
-     * @param id  (required)
+     * @param id (required)
      * @return Not Found (status code 404)
      *         or Success (status code 200)
      */
-    @Operation(
-        operationId = "apiV1CustomersIdGet",
-        summary = "",
-        tags = { "Customers" },
-        responses = {
+    @Operation(operationId = "apiV1CustomersIdGet", summary = "", tags = { "Customers" }, responses = {
             @ApiResponse(responseCode = "404", description = "Not Found", content = {
-                @Content(mediaType = "text/plain", schema = @Schema(implementation = ProblemDetails.class)),
-                @Content(mediaType = "application/json", schema = @Schema(implementation = ProblemDetails.class)),
-                @Content(mediaType = "text/json", schema = @Schema(implementation = ProblemDetails.class))
+                    @Content(mediaType = "text/plain", schema = @Schema(implementation = ProblemDetails.class)),
+                    @Content(mediaType = "application/json", schema = @Schema(implementation = ProblemDetails.class)),
+                    @Content(mediaType = "text/json", schema = @Schema(implementation = ProblemDetails.class))
             }),
             @ApiResponse(responseCode = "200", description = "Success", content = {
-                @Content(mediaType = "text/plain", schema = @Schema(implementation = CustomerModel.class)),
-                @Content(mediaType = "application/json", schema = @Schema(implementation = CustomerModel.class)),
-                @Content(mediaType = "text/json", schema = @Schema(implementation = CustomerModel.class))
+                    @Content(mediaType = "text/plain", schema = @Schema(implementation = CustomerModel.class)),
+                    @Content(mediaType = "application/json", schema = @Schema(implementation = CustomerModel.class)),
+                    @Content(mediaType = "text/json", schema = @Schema(implementation = CustomerModel.class))
             })
-        }
-    )
-    @RequestMapping(
-        method = RequestMethod.GET,
-        value = "/api/v1/customers/{id}",
-        produces = { "text/plain", "application/json", "text/json" }
-    )
-    default CompletableFuture<ResponseEntity<CustomerModel>> getCustomer(
-        @Parameter(name = "id", description = "", required = true) @PathVariable("id") Integer id
-    ) {
-        return CompletableFuture.supplyAsync(()-> {
-            getRequest().ifPresent(request -> {
-                for (MediaType mediaType: MediaType.parseMediaTypes(request.getHeader("Accept"))) {
-                    if (mediaType.isCompatibleWith(MediaType.valueOf("application/json"))) {
-                        String exampleString = "{ \"firstname\" : \"firstname\", \"id\" : 0, \"lastname\" : \"lastname\" }";
-                        ApiUtil.setExampleResponse(request, "application/json", exampleString);
-                        break;
-                    }
-                    if (mediaType.isCompatibleWith(MediaType.valueOf("text/json"))) {
-                        String exampleString = "Custom MIME type example not yet supported: text/json";
-                        ApiUtil.setExampleResponse(request, "text/json", exampleString);
-                        break;
-                    }
-                    if (mediaType.isCompatibleWith(MediaType.valueOf("text/plain"))) {
-                        String exampleString = "Custom MIME type example not yet supported: text/plain";
-                        ApiUtil.setExampleResponse(request, "text/plain", exampleString);
-                        break;
-                    }
-                }
-            });
-            return new ResponseEntity<>(HttpStatus.NOT_IMPLEMENTED);
-        }, Runnable::run);
-
-    }
-
+    })
+    @RequestMapping(method = RequestMethod.GET, value = "/api/v1/customers/{id}", produces = { "text/plain",
+            "application/json", "text/json" })
+    CompletableFuture<ResponseEntity<CustomerModel>> getCustomer(
+            @Parameter(name = "id", description = "", required = true) @PathVariable("id") BigInteger id);
 
     /**
-     * POST /api/v1/customers : 
+     * POST /api/v1/customers :
      *
-     * @param createCustomer  (optional)
+     * @param createCustomer (optional)
      * @return Bad Request (status code 400)
      */
-    @Operation(
-        operationId = "apiV1CustomersPost",
-        summary = "",
-        tags = { "Customers" },
-        responses = {
+    @Operation(operationId = "apiV1CustomersPost", summary = "", tags = { "Customers" }, responses = {
             @ApiResponse(responseCode = "400", description = "Bad Request", content = {
-                @Content(mediaType = "text/plain", schema = @Schema(implementation = Map.class)),
-                @Content(mediaType = "application/json", schema = @Schema(implementation = Map.class)),
-                @Content(mediaType = "text/json", schema = @Schema(implementation = Map.class))
+                    @Content(mediaType = "text/plain", schema = @Schema(implementation = Map.class)),
+                    @Content(mediaType = "application/json", schema = @Schema(implementation = Map.class)),
+                    @Content(mediaType = "text/json", schema = @Schema(implementation = Map.class))
             })
-        }
-    )
-    @RequestMapping(
-        method = RequestMethod.POST,
-        value = "/api/v1/customers",
-        produces = { "text/plain", "application/json", "text/json" },
-        consumes = { "application/json", "text/json", "application/*+json" }
-    )
-    default CompletableFuture<ResponseEntity<Void>> createCustomer(
-        @Parameter(name = "CreateCustomer", description = "") @Valid @RequestBody(required = false) CreateCustomer createCustomer
-    ) {
-        return CompletableFuture.completedFuture(new ResponseEntity<>(HttpStatus.NOT_IMPLEMENTED));
-
-    }
-
+    })
+    @RequestMapping(method = RequestMethod.POST, value = "/api/v1/customers", produces = { "text/plain",
+            "application/json", "text/json" }, consumes = { "application/json", "text/json", "application/*+json" })
+    CompletableFuture<ResponseEntity<CustomerModel>> createCustomer(
+            @Parameter(name = "CreateCustomer", description = "") @Valid @RequestBody(required = false) CreateCustomer createCustomer);
 
     /**
      * GET /api/v1/orders
      *
      * @return Success (status code 200)
      */
-    @Operation(
-        operationId = "apiV1OrdersGet",
-        tags = { "Orders" },
-        responses = {
+    @Operation(operationId = "apiV1OrdersGet", tags = { "Orders" }, responses = {
             @ApiResponse(responseCode = "200", description = "Success", content = {
-                @Content(mediaType = "text/plain", schema = @Schema(implementation = OrderModel.class)),
-                @Content(mediaType = "application/json", schema = @Schema(implementation = OrderModel.class)),
-                @Content(mediaType = "text/json", schema = @Schema(implementation = OrderModel.class))
+                    @Content(mediaType = "text/plain", schema = @Schema(implementation = OrderModel.class)),
+                    @Content(mediaType = "application/json", schema = @Schema(implementation = OrderModel.class)),
+                    @Content(mediaType = "text/json", schema = @Schema(implementation = OrderModel.class))
             })
-        }
-    )
-    @RequestMapping(
-        method = RequestMethod.GET,
-        value = "/api/v1/orders",
-        produces = { "text/plain", "application/json", "text/json" }
-    )
-    default CompletableFuture<ResponseEntity<List<OrderModel>>> getOrders(
-        
-    ) {
-        return CompletableFuture.supplyAsync(()-> {
-            getRequest().ifPresent(request -> {
-                for (MediaType mediaType: MediaType.parseMediaTypes(request.getHeader("Accept"))) {
-                    if (mediaType.isCompatibleWith(MediaType.valueOf("application/json"))) {
-                        String exampleString = "{ \"id\" : 0, \"orderDate\" : \"2000-01-23T04:56:07.000+00:00\", \"customer\" : { \"firstname\" : \"firstname\", \"id\" : 0, \"lastname\" : \"lastname\" }, \"products\" : [ null, null ] }";
-                        ApiUtil.setExampleResponse(request, "application/json", exampleString);
-                        break;
-                    }
-                    if (mediaType.isCompatibleWith(MediaType.valueOf("text/json"))) {
-                        String exampleString = "Custom MIME type example not yet supported: text/json";
-                        ApiUtil.setExampleResponse(request, "text/json", exampleString);
-                        break;
-                    }
-                    if (mediaType.isCompatibleWith(MediaType.valueOf("text/plain"))) {
-                        String exampleString = "Custom MIME type example not yet supported: text/plain";
-                        ApiUtil.setExampleResponse(request, "text/plain", exampleString);
-                        break;
-                    }
-                }
-            });
-            return new ResponseEntity<>(HttpStatus.NOT_IMPLEMENTED);
-        }, Runnable::run);
+    })
+    @RequestMapping(method = RequestMethod.GET, value = "/api/v1/orders", produces = { "text/plain", "application/json",
+            "text/json" })
+    CompletableFuture<ResponseEntity<List<OrderModel>>> getOrders(
 
-    }
-
+    );
 
     /**
      * GET /api/v1/orders/{id}
      *
-     * @param id  (required)
+     * @param id (required)
      * @return Not Found (status code 404)
      *         or Success (status code 200)
      */
-    @Operation(
-        operationId = "apiV1OrdersIdGet",
-        tags = { "Orders" },
-        responses = {
+    @Operation(operationId = "apiV1OrdersIdGet", tags = { "Orders" }, responses = {
             @ApiResponse(responseCode = "404", description = "Not Found", content = {
-                @Content(mediaType = "text/plain", schema = @Schema(implementation = ProblemDetails.class)),
-                @Content(mediaType = "application/json", schema = @Schema(implementation = ProblemDetails.class)),
-                @Content(mediaType = "text/json", schema = @Schema(implementation = ProblemDetails.class))
+                    @Content(mediaType = "text/plain", schema = @Schema(implementation = ProblemDetails.class)),
+                    @Content(mediaType = "application/json", schema = @Schema(implementation = ProblemDetails.class)),
+                    @Content(mediaType = "text/json", schema = @Schema(implementation = ProblemDetails.class))
             }),
             @ApiResponse(responseCode = "200", description = "Success", content = {
-                @Content(mediaType = "text/plain", schema = @Schema(implementation = OrderModel.class)),
-                @Content(mediaType = "application/json", schema = @Schema(implementation = OrderModel.class)),
-                @Content(mediaType = "text/json", schema = @Schema(implementation = OrderModel.class))
+                    @Content(mediaType = "text/plain", schema = @Schema(implementation = OrderModel.class)),
+                    @Content(mediaType = "application/json", schema = @Schema(implementation = OrderModel.class)),
+                    @Content(mediaType = "text/json", schema = @Schema(implementation = OrderModel.class))
             })
-        }
-    )
-    @RequestMapping(
-        method = RequestMethod.GET,
-        value = "/api/v1/orders/{id}",
-        produces = { "text/plain", "application/json", "text/json" }
-    )
-    default CompletableFuture<ResponseEntity<OrderModel>> getOrder(
-        @Parameter(name = "id", description = "", required = true) @PathVariable("id") Integer id
-    ) {
-        return CompletableFuture.supplyAsync(()-> {
-            getRequest().ifPresent(request -> {
-                for (MediaType mediaType: MediaType.parseMediaTypes(request.getHeader("Accept"))) {
-                    if (mediaType.isCompatibleWith(MediaType.valueOf("application/json"))) {
-                        String exampleString = "{ \"id\" : 0, \"orderDate\" : \"2000-01-23T04:56:07.000+00:00\", \"customer\" : { \"firstname\" : \"firstname\", \"id\" : 0, \"lastname\" : \"lastname\" }, \"products\" : [ null, null ] }";
-                        ApiUtil.setExampleResponse(request, "application/json", exampleString);
-                        break;
-                    }
-                    if (mediaType.isCompatibleWith(MediaType.valueOf("text/json"))) {
-                        String exampleString = "Custom MIME type example not yet supported: text/json";
-                        ApiUtil.setExampleResponse(request, "text/json", exampleString);
-                        break;
-                    }
-                    if (mediaType.isCompatibleWith(MediaType.valueOf("text/plain"))) {
-                        String exampleString = "Custom MIME type example not yet supported: text/plain";
-                        ApiUtil.setExampleResponse(request, "text/plain", exampleString);
-                        break;
-                    }
-                }
-            });
-            return new ResponseEntity<>(HttpStatus.NOT_IMPLEMENTED);
-        }, Runnable::run);
-
-    }
-
+    })
+    @RequestMapping(method = RequestMethod.GET, value = "/api/v1/orders/{id}", produces = { "text/plain",
+            "application/json", "text/json" })
+    CompletableFuture<ResponseEntity<OrderModel>> getOrder(
+            @Parameter(name = "id", description = "", required = true) @PathVariable("id") BigInteger id);
 
     /**
-     * POST /api/v1/orders/{id}/products : 
+     * POST /api/v1/orders/{id}/products :
      * 
      *
-     * @param id order id (required)
-     * @param addProductToOrder  (optional)
+     * @param id                order id (required)
+     * @param addProductToOrder (optional)
      * @return Bad Request (status code 400)
      */
-    @Operation(
-        operationId = "apiV1OrdersIdProductsPost",
-        summary = "",
-        tags = { "Orders" },
-        responses = {
+    @Operation(operationId = "apiV1OrdersIdProductsPost", summary = "", tags = { "Orders" }, responses = {
             @ApiResponse(responseCode = "400", description = "Bad Request", content = {
-                @Content(mediaType = "text/plain", schema = @Schema(implementation = Map.class)),
-                @Content(mediaType = "application/json", schema = @Schema(implementation = Map.class)),
-                @Content(mediaType = "text/json", schema = @Schema(implementation = Map.class))
+                    @Content(mediaType = "text/plain", schema = @Schema(implementation = Map.class)),
+                    @Content(mediaType = "application/json", schema = @Schema(implementation = Map.class)),
+                    @Content(mediaType = "text/json", schema = @Schema(implementation = Map.class))
             })
-        }
-    )
-    @RequestMapping(
-        method = RequestMethod.POST,
-        value = "/api/v1/orders/{id}/products",
-        produces = { "text/plain", "application/json", "text/json" },
-        consumes = { "application/json", "text/json", "application/*+json" }
-    )
-    default CompletableFuture<ResponseEntity<Void>> addProductToOrder(
-        @Parameter(name = "id", description = "order id", required = true) @PathVariable("id") Integer id,
-        @Parameter(name = "AddProductToOrder", description = "") @Valid @RequestBody(required = false) AddProductToOrder addProductToOrder
-    ) {
-        return CompletableFuture.completedFuture(new ResponseEntity<>(HttpStatus.NOT_IMPLEMENTED));
-
-    }
-
+    })
+    @RequestMapping(method = RequestMethod.POST, value = "/api/v1/orders/{id}/products", produces = { "text/plain",
+            "application/json", "text/json" }, consumes = { "application/json", "text/json", "application/*+json" })
+    CompletableFuture<ResponseEntity<Void>> addProductToOrder(
+            @Parameter(name = "id", description = "order id", required = true) @PathVariable("id") BigInteger id,
+            @Parameter(name = "AddProductToOrder", description = "") @Valid @RequestBody(required = false) AddProductToOrder addProductToOrder);
 
     /**
-     * POST /api/v1/orders : 
+     * POST /api/v1/orders :
      * 
      *
-     * @param addOrder  (optional)
+     * @param addOrder (optional)
      * @return Bad Request (status code 400)
      */
-    @Operation(
-        operationId = "apiV1OrdersPost",
-        summary = "",
-        tags = { "Orders" },
-        responses = {
+    @Operation(operationId = "apiV1OrdersPost", summary = "", tags = { "Orders" }, responses = {
             @ApiResponse(responseCode = "400", description = "Bad Request", content = {
-                @Content(mediaType = "text/plain", schema = @Schema(implementation = Map.class)),
-                @Content(mediaType = "application/json", schema = @Schema(implementation = Map.class)),
-                @Content(mediaType = "text/json", schema = @Schema(implementation = Map.class))
+                    @Content(mediaType = "text/plain", schema = @Schema(implementation = Map.class)),
+                    @Content(mediaType = "application/json", schema = @Schema(implementation = Map.class)),
+                    @Content(mediaType = "text/json", schema = @Schema(implementation = Map.class))
             })
-        }
-    )
-    @RequestMapping(
-        method = RequestMethod.POST,
-        value = "/api/v1/orders",
-        produces = { "text/plain", "application/json", "text/json" },
-        consumes = { "application/json", "text/json", "application/*+json" }
-    )
-    default CompletableFuture<ResponseEntity<Void>> addOrder(
-        @Parameter(name = "AddOrder", description = "") @Valid @RequestBody(required = false) AddOrder addOrder
-    ) {
-        return CompletableFuture.completedFuture(new ResponseEntity<>(HttpStatus.NOT_IMPLEMENTED));
-
-    }
-
+    })
+    @RequestMapping(method = RequestMethod.POST, value = "/api/v1/orders", produces = { "text/plain",
+            "application/json", "text/json" }, consumes = { "application/json", "text/json", "application/*+json" })
+    CompletableFuture<ResponseEntity<OrderModel>> addOrder(
+            @Parameter(name = "AddOrder", description = "") @Valid @RequestBody(required = false) AddOrder addOrder);
 
     /**
-     * GET /api/v1/products : 
+     * GET /api/v1/products :
      *
      * @return Success (status code 200)
      */
-    @Operation(
-        operationId = "apiV1ProductsGet",
-        summary = "",
-        tags = { "Products" },
-        responses = {
+    @Operation(operationId = "apiV1ProductsGet", summary = "", tags = { "Products" }, responses = {
             @ApiResponse(responseCode = "200", description = "Success", content = {
-                @Content(mediaType = "text/plain", schema = @Schema(implementation = ProductModel.class)),
-                @Content(mediaType = "application/json", schema = @Schema(implementation = ProductModel.class)),
-                @Content(mediaType = "text/json", schema = @Schema(implementation = ProductModel.class))
+                    @Content(mediaType = "text/plain", schema = @Schema(implementation = ProductModel.class)),
+                    @Content(mediaType = "application/json", schema = @Schema(implementation = ProductModel.class)),
+                    @Content(mediaType = "text/json", schema = @Schema(implementation = ProductModel.class))
             })
-        }
-    )
-    @RequestMapping(
-        method = RequestMethod.GET,
-        value = "/api/v1/products",
-        produces = { "text/plain", "application/json", "text/json" }
-    )
-    default CompletableFuture<ResponseEntity<List<ProductModel>>> getProducts(
-        
-    ) {
-        return CompletableFuture.supplyAsync(()-> {
-            getRequest().ifPresent(request -> {
-                for (MediaType mediaType: MediaType.parseMediaTypes(request.getHeader("Accept"))) {
-                    if (mediaType.isCompatibleWith(MediaType.valueOf("application/json"))) {
-                        String exampleString = "null";
-                        ApiUtil.setExampleResponse(request, "application/json", exampleString);
-                        break;
-                    }
-                    if (mediaType.isCompatibleWith(MediaType.valueOf("text/json"))) {
-                        String exampleString = "Custom MIME type example not yet supported: text/json";
-                        ApiUtil.setExampleResponse(request, "text/json", exampleString);
-                        break;
-                    }
-                    if (mediaType.isCompatibleWith(MediaType.valueOf("text/plain"))) {
-                        String exampleString = "Custom MIME type example not yet supported: text/plain";
-                        ApiUtil.setExampleResponse(request, "text/plain", exampleString);
-                        break;
-                    }
-                }
-            });
-            return new ResponseEntity<>(HttpStatus.NOT_IMPLEMENTED);
-        }, Runnable::run);
+    })
+    @RequestMapping(method = RequestMethod.GET, value = "/api/v1/products", produces = { "text/plain",
+            "application/json", "text/json" })
+    CompletableFuture<ResponseEntity<List<ProductModel>>> getProducts(
 
-    }
-
+    );
 
     /**
-     * GET /api/v1/products/{id} : 
+     * GET /api/v1/products/{id} :
      *
-     * @param id  (required)
+     * @param id (required)
      * @return Not Found (status code 404)
      *         or Success (status code 200)
      */
-    @Operation(
-        operationId = "apiV1ProductsIdGet",
-        summary = "",
-        tags = { "Products" },
-        responses = {
+    @Operation(operationId = "apiV1ProductsIdGet", summary = "", tags = { "Products" }, responses = {
             @ApiResponse(responseCode = "404", description = "Not Found", content = {
-                @Content(mediaType = "text/plain", schema = @Schema(implementation = ProblemDetails.class)),
-                @Content(mediaType = "application/json", schema = @Schema(implementation = ProblemDetails.class)),
-                @Content(mediaType = "text/json", schema = @Schema(implementation = ProblemDetails.class))
+                    @Content(mediaType = "text/plain", schema = @Schema(implementation = ProblemDetails.class)),
+                    @Content(mediaType = "application/json", schema = @Schema(implementation = ProblemDetails.class)),
+                    @Content(mediaType = "text/json", schema = @Schema(implementation = ProblemDetails.class))
             }),
             @ApiResponse(responseCode = "200", description = "Success", content = {
-                @Content(mediaType = "text/plain", schema = @Schema(implementation = ProductModel.class)),
-                @Content(mediaType = "application/json", schema = @Schema(implementation = ProductModel.class)),
-                @Content(mediaType = "text/json", schema = @Schema(implementation = ProductModel.class))
+                    @Content(mediaType = "text/plain", schema = @Schema(implementation = ProductModel.class)),
+                    @Content(mediaType = "application/json", schema = @Schema(implementation = ProductModel.class)),
+                    @Content(mediaType = "text/json", schema = @Schema(implementation = ProductModel.class))
             })
-        }
-    )
-    @RequestMapping(
-        method = RequestMethod.GET,
-        value = "/api/v1/products/{id}",
-        produces = { "text/plain", "application/json", "text/json" }
-    )
-    default CompletableFuture<ResponseEntity<ProductModel>> getProduct(
-        @Parameter(name = "id", description = "", required = true) @PathVariable("id") Integer id
-    ) {
-        return CompletableFuture.supplyAsync(()-> {
-            getRequest().ifPresent(request -> {
-                for (MediaType mediaType: MediaType.parseMediaTypes(request.getHeader("Accept"))) {
-                    if (mediaType.isCompatibleWith(MediaType.valueOf("application/json"))) {
-                        String exampleString = "null";
-                        ApiUtil.setExampleResponse(request, "application/json", exampleString);
-                        break;
-                    }
-                    if (mediaType.isCompatibleWith(MediaType.valueOf("text/json"))) {
-                        String exampleString = "Custom MIME type example not yet supported: text/json";
-                        ApiUtil.setExampleResponse(request, "text/json", exampleString);
-                        break;
-                    }
-                    if (mediaType.isCompatibleWith(MediaType.valueOf("text/plain"))) {
-                        String exampleString = "Custom MIME type example not yet supported: text/plain";
-                        ApiUtil.setExampleResponse(request, "text/plain", exampleString);
-                        break;
-                    }
-                }
-            });
-            return new ResponseEntity<>(HttpStatus.NOT_IMPLEMENTED);
-        }, Runnable::run);
-
-    }
-
+    })
+    @RequestMapping(method = RequestMethod.GET, value = "/api/v1/products/{id}", produces = { "text/plain",
+            "application/json", "text/json" })
+    CompletableFuture<ResponseEntity<ProductModel>> getProduct(
+            @Parameter(name = "id", description = "", required = true) @PathVariable("id") BigInteger id);
 
     /**
      * POST /api/v1/products : Add product to available products
-     * You could for instance add products using  &#x60;&#x60;&#x60;JSON  {    \&quot;cost\&quot;:124, \&quot;name\&quot;: \&quot;tea\&quot;  }  &#x60;&#x60;&#x60;
+     * You could for instance add products using &#x60;&#x60;&#x60;JSON {
+     * \&quot;cost\&quot;:124, \&quot;name\&quot;: \&quot;tea\&quot; }
+     * &#x60;&#x60;&#x60;
      *
-     * @param apiV1ProductsGetRequest  (optional)
+     * @param apiV1ProductsGetRequest (optional)
      * @return The product was added successfully (status code 200)
-     *         or  (status code 400)
+     *         or (status code 400)
      */
-    @Operation(
-        operationId = "apiV1ProductsPost",
-        summary = "Add product to available products",
-        tags = { "Products" },
-        responses = {
-            @ApiResponse(responseCode = "200", description = "The product was added successfully"),
-            @ApiResponse(responseCode = "400", description = "", content = {
-                @Content(mediaType = "text/plain", schema = @Schema(implementation = Map.class)),
-                @Content(mediaType = "application/json", schema = @Schema(implementation = Map.class)),
-                @Content(mediaType = "text/json", schema = @Schema(implementation = Map.class))
+    @Operation(operationId = "apiV1ProductsPost", summary = "Add product to available products", tags = {
+            "Products" }, responses = {
+                    @ApiResponse(responseCode = "200", description = "The product was added successfully"),
+                    @ApiResponse(responseCode = "400", description = "", content = {
+                            @Content(mediaType = "text/plain", schema = @Schema(implementation = Map.class)),
+                            @Content(mediaType = "application/json", schema = @Schema(implementation = Map.class)),
+                            @Content(mediaType = "text/json", schema = @Schema(implementation = Map.class))
+                    })
             })
-        }
-    )
-    @RequestMapping(
-        method = RequestMethod.POST,
-        value = "/api/v1/products",
-        produces = { "text/plain", "application/json", "text/json" },
-        consumes = { "application/json", "text/json", "application/*+json" }
-    )
-    default CompletableFuture<ResponseEntity<Void>> addProduct(
-        @Parameter(name = "ApiV1ProductsGetRequest", description = "") @Valid @RequestBody(required = false) AddProduct apiV1ProductsGetRequest
-    ) {
-        return CompletableFuture.completedFuture(new ResponseEntity<>(HttpStatus.NOT_IMPLEMENTED));
-
-    }
+    @RequestMapping(method = RequestMethod.POST, value = "/api/v1/products", produces = { "text/plain",
+            "application/json", "text/json" }, consumes = { "application/json", "text/json", "application/*+json" })
+    CompletableFuture<ResponseEntity<ProductModel>> addProduct(
+            @Parameter(name = "ApiV1ProductsGetRequest", description = "") @Valid @RequestBody(required = false) AddProduct apiV1ProductsGetRequest);
 
 }

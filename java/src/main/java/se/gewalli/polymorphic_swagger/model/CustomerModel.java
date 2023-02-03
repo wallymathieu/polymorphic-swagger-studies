@@ -2,22 +2,21 @@ package se.gewalli.polymorphic_swagger.model;
 
 import java.util.Objects;
 import com.fasterxml.jackson.annotation.JsonProperty;
+
+import java.math.BigInteger;
 import java.util.Arrays;
 import org.openapitools.jackson.nullable.JsonNullable;
 import io.swagger.v3.oas.annotations.media.Schema;
 
 
-import javax.annotation.Generated;
-
 /**
  * CustomerModel
  */
 
-@Generated(value = "org.openapitools.codegen.languages.SpringCodegen", date = "2023-01-28T19:45:56.796705+02:00[Europe/Athens]")
 public class CustomerModel {
 
   @JsonProperty("id")
-  private Integer id;
+  private BigInteger id;
 
   @JsonProperty("lastname")
   private JsonNullable<String> lastname = JsonNullable.undefined();
@@ -25,7 +24,7 @@ public class CustomerModel {
   @JsonProperty("firstname")
   private JsonNullable<String> firstname = JsonNullable.undefined();
 
-  public CustomerModel id(Integer id) {
+  public CustomerModel id(BigInteger id) {
     this.id = id;
     return this;
   }
@@ -36,11 +35,11 @@ public class CustomerModel {
   */
   
   @Schema(name = "id", required = false)
-  public Integer getId() {
+  public BigInteger getId() {
     return id;
   }
 
-  public void setId(Integer id) {
+  public void setId(BigInteger id) {
     this.id = id;
   }
 

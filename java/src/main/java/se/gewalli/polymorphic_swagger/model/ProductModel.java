@@ -5,6 +5,8 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonSubTypes;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
+
+import java.math.BigInteger;
 import java.util.Arrays;
 import org.openapitools.jackson.nullable.JsonNullable;
 import se.gewalli.polymorphic_swagger.model.ProductModel;
@@ -31,7 +33,7 @@ public class ProductModel {
   private String version;
 
   @JsonProperty("id")
-  private Integer id;
+  private BigInteger id;
 
   @JsonProperty("cost")
   private Float cost;
@@ -58,7 +60,7 @@ public class ProductModel {
     this.version = version;
   }
 
-  public ProductModel id(Integer id) {
+  public ProductModel id(BigInteger id) {
     this.id = id;
     return this;
   }
@@ -69,11 +71,11 @@ public class ProductModel {
   */
   
   @Schema(name = "id", required = false)
-  public Integer getId() {
+  public BigInteger getId() {
     return id;
   }
 
-  public void setId(Integer id) {
+  public void setId(BigInteger id) {
     this.id = id;
   }
 

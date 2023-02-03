@@ -4,28 +4,29 @@ import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Optional;
+import java.util.UUID;
 
 import se.gewalli.polymorphic_swagger.entities.Customer;
 import se.gewalli.polymorphic_swagger.entities.Order;
 import se.gewalli.polymorphic_swagger.entities.Product;
 
 public class InMemoryRepository extends Repository {
-    Map<Integer, Customer> customerMap = new HashMap<>();
-    Map<Integer, Product> productMap = new HashMap<>();
-    Map<Integer, Order> orderMap = new HashMap<>();
+    Map<UUID, Customer> customerMap = new HashMap<>();
+    Map<UUID, Product> productMap = new HashMap<>();
+    Map<UUID, Order> orderMap = new HashMap<>();
 
     @Override
-    public Optional<Customer> tryGetCustomer(int customerId) {
+    public Optional<Customer> tryGetCustomer(UUID customerId) {
         return Optional.ofNullable(customerMap.get(customerId));
     }
 
     @Override
-    public Optional<Product> tryGetProduct(int productId) {
+    public Optional<Product> tryGetProduct(UUID productId) {
         return Optional.ofNullable(productMap.get(productId));
     }
 
     @Override
-    public Optional<Order> tryGetOrder(int orderId) {
+    public Optional<Order> tryGetOrder(UUID orderId) {
         return Optional.ofNullable(orderMap.get(orderId));
     }
 

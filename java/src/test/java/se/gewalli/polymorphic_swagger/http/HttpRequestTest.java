@@ -16,6 +16,7 @@ import se.gewalli.polymorphic_swagger.model.CustomerModel;
 import se.gewalli.polymorphic_swagger.model.OrderModel;
 import se.gewalli.polymorphic_swagger.model.ProductModel;
 
+import java.math.BigInteger;
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -42,8 +43,8 @@ public class HttpRequestTest {
 
     @Test
     public void testCanCreateAndGetCustomer() throws Exception {
-        customers.post(new CreateCustomer("Firstname", "Lastname")).execute();
-        Response<CustomerModel> exchange = customers.get(1).execute();
+        BigInteger id = customers.post(new CreateCustomer("Firstname", "Lastname")).execute().body().getId();
+        Response<CustomerModel> exchange = customers.get(id).execute();
         assertEquals(HttpStatus.OK.value(), exchange.code());
         assertEquals("Firstname", exchange.body().getFirstname());
     }
@@ -59,17 +60,17 @@ public class HttpRequestTest {
 
     @Test
     public void testCanCreateAndGetProduct() throws Exception {
-        products.post(new AddProduct(10, "product1")).execute();
-        Response<ProductModel> exchange = products.get(1).execute();
+        BigInteger id = products.post(new AddProduct(10, "product1")).execute().body().getId();
+        Response<ProductModel> exchange = products.get(id).execute();
         assertEquals(HttpStatus.OK.value(), exchange.code());
         assertEquals("product1", exchange.body().getName());
     }
 
     @Test
     public void testCanCreateAndGetOrder() throws Exception {
-        int customerId = customers.post(new CreateCustomer("Firstname", "Lastname")).execute().body().getId();
-        int orderId = orders.post(new AddOrder(customerId)).execute().body().getId();
-        int productId = products.post(new AddProduct(10, "product1")).execute().body().getId();
+        BigInteger customerId = customers.post(new CreateCustomer("Firstname", "Lastname")).execute().body().getId();
+        BigInteger orderId = orders.post(new AddOrder(customerId)).execute().body().getId();
+        BigInteger productId = products.post(new AddProduct(10, "product1")).execute().body().getId();
         Response<OrderModel> productAddedResponse = orders.addProduct(orderId, new AddProductToOrder().productId(productId)).execute();
         assertEquals(HttpStatus.OK.value(), productAddedResponse.code());
         Response<OrderModel> exchange = orders.get(orderId).execute();

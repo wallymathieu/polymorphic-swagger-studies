@@ -1,11 +1,13 @@
 package se.gewalli.polymorphic_swagger.commands;
 
+import java.util.UUID;
+
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 import se.gewalli.polymorphic_swagger.data.Repository;
 import se.gewalli.polymorphic_swagger.entities.Product;
 
-public record AddProductCommand(@JsonProperty("id") int id,
+public record AddProductCommand(@JsonProperty("id") UUID id,
                                 @JsonProperty("version") int version,
                                 @JsonProperty("cost") float cost,
                                 @JsonProperty("name") String name) implements Command {

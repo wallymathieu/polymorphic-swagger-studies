@@ -2,6 +2,8 @@ package se.gewalli.polymorphic_swagger.model;
 
 import java.util.Objects;
 import com.fasterxml.jackson.annotation.JsonProperty;
+
+import java.math.BigInteger;
 import java.time.OffsetDateTime;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -12,17 +14,14 @@ import javax.validation.Valid;
 import io.swagger.v3.oas.annotations.media.Schema;
 
 
-import javax.annotation.Generated;
-
 /**
  * OrderModel
  */
 
-@Generated(value = "org.openapitools.codegen.languages.SpringCodegen", date = "2023-01-28T19:45:56.796705+02:00[Europe/Athens]")
 public class OrderModel {
 
   @JsonProperty("id")
-  private Integer id;
+  private BigInteger id;
 
   @JsonProperty("customer")
   private CustomerModel customer;
@@ -35,7 +34,7 @@ public class OrderModel {
   @Valid
   private JsonNullable<List<ProductModel>> products = JsonNullable.undefined();
 
-  public OrderModel id(Integer id) {
+  public OrderModel id(BigInteger id) {
     this.id = id;
     return this;
   }
@@ -46,11 +45,11 @@ public class OrderModel {
   */
   
   @Schema(name = "id", required = false)
-  public Integer getId() {
+  public BigInteger getId() {
     return id;
   }
 
-  public void setId(Integer id) {
+  public void setId(BigInteger id) {
     this.id = id;
   }
 

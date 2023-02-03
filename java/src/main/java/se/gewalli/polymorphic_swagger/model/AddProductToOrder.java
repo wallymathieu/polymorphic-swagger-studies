@@ -1,5 +1,6 @@
 package se.gewalli.polymorphic_swagger.model;
 
+import java.math.BigInteger;
 import java.util.Objects;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import javax.validation.constraints.*;
@@ -12,9 +13,9 @@ import io.swagger.v3.oas.annotations.media.Schema;
 public class AddProductToOrder {
 
   @JsonProperty("productId")
-  private Integer productId;
+  private BigInteger productId;
 
-  public AddProductToOrder productId(Integer productId) {
+  public AddProductToOrder productId(BigInteger productId) {
     this.productId = productId;
     return this;
   }
@@ -25,11 +26,11 @@ public class AddProductToOrder {
   */
   @NotNull 
   @Schema(name = "productId", required = true)
-  public Integer getProductId() {
+  public BigInteger getProductId() {
     return productId;
   }
 
-  public void setProductId(Integer productId) {
+  public void setProductId(BigInteger productId) {
     this.productId = productId;
   }
 

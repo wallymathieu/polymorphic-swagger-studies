@@ -1,5 +1,7 @@
 package se.gewalli.polymorphic_swagger.commands;
 
+import java.util.UUID;
+
 import com.fasterxml.jackson.annotation.JsonSubTypes;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeInfo.As;
@@ -20,5 +22,5 @@ public interface Command {
 
     void run(Repository repository) throws EntityNotFound;
 
-    int id();
+    UUID id();
 }

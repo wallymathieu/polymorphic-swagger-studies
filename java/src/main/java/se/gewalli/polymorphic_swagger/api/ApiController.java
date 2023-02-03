@@ -10,6 +10,7 @@ import org.springframework.web.context.request.NativeWebRequest;
 import se.gewalli.polymorphic_swagger.CommandsHandler;
 import se.gewalli.polymorphic_swagger.commands.Command;
 import se.gewalli.polymorphic_swagger.data.Repository;
+import se.gewalli.polymorphic_swagger.data.UUIDUtils;
 import se.gewalli.polymorphic_swagger.entities.Customer;
 import se.gewalli.polymorphic_swagger.entities.Order;
 import se.gewalli.polymorphic_swagger.entities.Product;
@@ -25,11 +26,13 @@ import se.gewalli.polymorphic_swagger.commands.AddCustomerCommand;
 import se.gewalli.polymorphic_swagger.commands.AddProductCommand;
 import se.gewalli.polymorphic_swagger.commands.AddOrderCommand;
 
+import java.math.BigInteger;
 import java.time.Instant;
 import java.time.OffsetDateTime;
 import java.time.ZoneOffset;
 import java.util.List;
 import java.util.Optional;
+import java.util.UUID;
 import java.util.concurrent.CompletableFuture;
 
 import javax.validation.Valid;
@@ -55,38 +58,47 @@ public class ApiController implements Api {
     }
 
     @Override
-    public CompletableFuture<ResponseEntity<Void>> addOrder(@Valid AddOrder body) {
-        Command command = new AddOrderCommand(0, 0, body.getCustomer(), Instant.now());
-        return commandsHandler.handle(command).thenApply(result -> result.fold(a -> new ResponseEntity<>(HttpStatus.OK),
-                err -> new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR)));
+    public CompletableFuture<ResponseEntity<OrderModel>> addOrder(@Valid AddOrder body) {
+        Command command = new AddOrderCommand(UUID.randomUUID(), 0, UUIDUtils.convertFromBigInteger(body.getCustomer()), Instant.now());
+        return commandsHandler.handle(command)
+                .thenApply(result -> result.fold(
+                        len -> new ResponseEntity<>(this.mapToOrderModel(repository.tryGetOrder(command.id()).get()),
+                                HttpStatus.OK),
+                        err -> new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR)));
     }
 
     @Override
-    public CompletableFuture<ResponseEntity<Void>> addProduct(@Valid AddProduct body) {
-        Command command = new AddProductCommand(0, 0, body.getCost().intValue(), body.getName());
-        return commandsHandler.handle(command).thenApply(result -> result.fold(a -> new ResponseEntity<>(HttpStatus.OK),
-                err -> new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR)));
+    public CompletableFuture<ResponseEntity<ProductModel>> addProduct(@Valid AddProduct body) {
+        Command command = new AddProductCommand(UUID.randomUUID(), 0, body.getCost().intValue(), body.getName());
+        return commandsHandler.handle(command)
+                .thenApply(result -> result.fold(
+                        len -> new ResponseEntity<>(this.mapToProductModel(repository.tryGetProduct(command.id()).get()),
+                                HttpStatus.OK),
+                        err -> new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR)));
     }
 
     @Override
-    public CompletableFuture<ResponseEntity<Void>> addProductToOrder(Integer id,
+    public CompletableFuture<ResponseEntity<Void>> addProductToOrder(BigInteger id,
             @Valid AddProductToOrder addProductToOrder) {
-        Command command = new AddProductToOrderCommand(0, 0, id, addProductToOrder.getProductId());
+        Command command = new AddProductToOrderCommand(UUID.randomUUID(), 0, UUIDUtils.convertFromBigInteger(id), UUIDUtils.convertFromBigInteger(addProductToOrder.getProductId()));
         return commandsHandler.handle(command).thenApply(result -> result.fold(a -> new ResponseEntity<>(HttpStatus.OK),
                 err -> new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR)));
     }
 
     @Override
-    public CompletableFuture<ResponseEntity<Void>> createCustomer(@Valid CreateCustomer createCustomer) {
-        Command command = new AddCustomerCommand(0, 0, createCustomer.getFirstname(), createCustomer.getLastname());
-        return commandsHandler.handle(command).thenApply(result -> result.fold(a -> new ResponseEntity<>(HttpStatus.OK),
-                err -> new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR)));
+    public CompletableFuture<ResponseEntity<CustomerModel>> createCustomer(@Valid CreateCustomer createCustomer) {
+        Command command = new AddCustomerCommand(UUID.randomUUID(),0, createCustomer.getFirstname(), createCustomer.getLastname());
+        return commandsHandler.handle(command)
+                .thenApply(result -> result.fold(
+                        len -> new ResponseEntity<>(this.mapToCustomerModel(repository.tryGetCustomer(command.id()).get()),
+                                HttpStatus.OK),
+                        err -> new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR)));
     }
 
     @Override
-    public CompletableFuture<ResponseEntity<CustomerModel>> getCustomer(Integer id) {
+    public CompletableFuture<ResponseEntity<CustomerModel>> getCustomer(BigInteger id) {
         return CompletableFuture
-                .supplyAsync(() -> repository.tryGetCustomer(id).map(this::mapToCustomerModel).map(ResponseEntity::ok)
+                .supplyAsync(() -> repository.tryGetCustomer(UUIDUtils.convertFromBigInteger(id)).map(this::mapToCustomerModel).map(ResponseEntity::ok)
                         .orElse(ResponseEntity.status(HttpStatus.NOT_FOUND).body(null)));
     }
 
@@ -97,9 +109,9 @@ public class ApiController implements Api {
     }
 
     @Override
-    public CompletableFuture<ResponseEntity<OrderModel>> getOrder(Integer id) {
+    public CompletableFuture<ResponseEntity<OrderModel>> getOrder(BigInteger id) {
         return CompletableFuture
-                .supplyAsync(() -> repository.tryGetOrder(id).map(this::mapToOrderModel).map(ResponseEntity::ok)
+                .supplyAsync(() -> repository.tryGetOrder(UUIDUtils.convertFromBigInteger(id)).map(this::mapToOrderModel).map(ResponseEntity::ok)
                         .orElse(ResponseEntity.status(HttpStatus.NOT_FOUND).body(null)));
     }
 
@@ -110,9 +122,9 @@ public class ApiController implements Api {
     }
 
     @Override
-    public CompletableFuture<ResponseEntity<ProductModel>> getProduct(Integer id) {
+    public CompletableFuture<ResponseEntity<ProductModel>> getProduct(BigInteger id) {
         return CompletableFuture
-                .supplyAsync(() -> repository.tryGetProduct(id).map(this::mapToProductModel).map(ResponseEntity::ok)
+                .supplyAsync(() -> repository.tryGetProduct(UUIDUtils.convertFromBigInteger(id)).map(this::mapToProductModel).map(ResponseEntity::ok)
                         .orElse(ResponseEntity.status(HttpStatus.NOT_FOUND).body(null)));
     }
 
@@ -124,7 +136,7 @@ public class ApiController implements Api {
 
     private OrderModel mapToOrderModel(Order order) {
         return new OrderModel()
-                .id(order.id())
+                .id(UUIDUtils.convertToBigInteger(order.id()))
                 .customer(mapToCustomerModel(order.customer()))
                 .orderDate(OffsetDateTime.ofInstant(order.orderDate(), ZoneOffset.UTC))
                 .products(order.products().stream().map(this::mapToProductModel).toList());
@@ -133,7 +145,7 @@ public class ApiController implements Api {
     private ProductModel mapToProductModel(Product product) {
         return new ProductModel()
                 .cost(product.cost())
-                .id(product.id())
+                .id(UUIDUtils.convertToBigInteger(product.id()))
                 .name(product.name())
                 .version(String.valueOf(product.version()));
     }
@@ -142,6 +154,6 @@ public class ApiController implements Api {
         return new CustomerModel()
                 .firstname(customer.firstName())
                 .lastname(customer.lastName())
-                .id(customer.id());
+                .id(UUIDUtils.convertToBigInteger(customer.id()));
     }
 }

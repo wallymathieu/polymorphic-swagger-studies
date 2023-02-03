@@ -1,6 +1,7 @@
 package se.gewalli.polymorphic_swagger;
 
 import java.util.ArrayList;
+import java.util.UUID;
 import java.util.concurrent.CompletableFuture;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

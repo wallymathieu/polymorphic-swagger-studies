@@ -8,13 +8,10 @@ import org.openapitools.jackson.nullable.JsonNullable;
 import io.swagger.v3.oas.annotations.media.Schema;
 
 
-import javax.annotation.Generated;
-
 /**
  * ProblemDetails
  */
 
-@Generated(value = "org.openapitools.codegen.languages.SpringCodegen", date = "2023-01-28T19:45:56.796705+02:00[Europe/Athens]")
 public class ProblemDetails extends HashMap<String, Object> {
 
   @JsonProperty("type")

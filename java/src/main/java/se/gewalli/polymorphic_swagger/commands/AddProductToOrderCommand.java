@@ -1,5 +1,6 @@
 package se.gewalli.polymorphic_swagger.commands;
 import java.util.ArrayList;
+import java.util.UUID;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 
@@ -7,10 +8,10 @@ import se.gewalli.polymorphic_swagger.data.EntityNotFound;
 import se.gewalli.polymorphic_swagger.data.Repository;
 import se.gewalli.polymorphic_swagger.entities.Order;
 import se.gewalli.polymorphic_swagger.entities.Product;
-public record AddProductToOrderCommand(@JsonProperty("id") int id,
+public record AddProductToOrderCommand(@JsonProperty("id") UUID id,
                                        @JsonProperty("version") int version,
-                                       @JsonProperty("orderId") int orderId,
-                                       @JsonProperty("productId") int productId) implements Command {
+                                       @JsonProperty("orderId") UUID orderId,
+                                       @JsonProperty("productId") UUID productId) implements Command {
     @Override
     public CommandType getType() {
         return CommandType.AddProductToOrderCommand;
