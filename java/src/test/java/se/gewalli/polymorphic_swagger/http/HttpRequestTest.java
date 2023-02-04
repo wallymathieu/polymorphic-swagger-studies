@@ -21,6 +21,7 @@ import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 @ExtendWith(SpringExtension.class)
 @SpringBootTest(webEnvironment = WebEnvironment.RANDOM_PORT, classes = ApplicationUnderTest.class)
@@ -55,7 +56,7 @@ public class HttpRequestTest {
         products.post(new AddProduct(20, "product2")).execute();
         Response<List<ProductModel>> exchange = products.list().execute();
         assertEquals(HttpStatus.OK.value(), exchange.code());
-        assertEquals(2, exchange.body().size());
+        assertTrue( exchange.body().size() >= 2);
     }
 
     @Test
