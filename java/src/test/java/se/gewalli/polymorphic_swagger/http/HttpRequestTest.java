@@ -56,7 +56,7 @@ public class HttpRequestTest {
         products.post(new AddProduct(20, "product2")).execute();
         Response<List<ProductModel>> exchange = products.list().execute();
         assertEquals(HttpStatus.OK.value(), exchange.code());
-        assertTrue( exchange.body().size() >= 2);
+        assertTrue(exchange.body().size() >= 2);
     }
 
     @Test
@@ -74,7 +74,8 @@ public class HttpRequestTest {
         assertEquals(HttpStatus.OK.value(), orderResponse.code());
         BigInteger orderId = orderResponse.body().getId();
         BigInteger productId = products.post(new AddProduct(10, "product1")).execute().body().getId();
-        Response<OrderModel> productAddedResponse = orders.addProduct(orderId, new AddProductToOrder().productId(productId)).execute();
+        Response<OrderModel> productAddedResponse = orders
+                .addProduct(orderId, new AddProductToOrder().productId(productId)).execute();
         assertEquals(HttpStatus.OK.value(), productAddedResponse.code());
         Response<OrderModel> exchange = orders.get(orderId).execute();
         assertEquals(HttpStatus.OK.value(), exchange.code());
