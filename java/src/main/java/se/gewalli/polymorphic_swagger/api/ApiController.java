@@ -39,23 +39,17 @@ import javax.validation.Valid;
 
 @Controller
 @RequestMapping("${openapi.polymorpicSwagger.base-path:}")
-public class ApiController implements Api {
+public class ApiController implements OrderApi, CustomerApi, ProductApi {
 
-        private final NativeWebRequest request;
         @Autowired
         private Repository repository;
         @Autowired
         private CommandsHandler commandsHandler;
 
         @Autowired
-        public ApiController(NativeWebRequest request) {
-                this.request = request;
+        public ApiController() {
         }
 
-        @Override
-        public Optional<NativeWebRequest> getRequest() {
-                return Optional.ofNullable(request);
-        }
 
         @Override
         public CompletableFuture<ResponseEntity<OrderModel>> addOrder(@Valid AddOrder body) {
