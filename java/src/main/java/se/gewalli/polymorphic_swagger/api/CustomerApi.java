@@ -21,7 +21,7 @@ import java.util.concurrent.CompletableFuture;
 
 
 @Validated
-@Tag(name = "customer-api", description = "the api API")
+@Tag(name = "customer-api", description = "the Customer API")
 public interface CustomerApi {
 
     /**

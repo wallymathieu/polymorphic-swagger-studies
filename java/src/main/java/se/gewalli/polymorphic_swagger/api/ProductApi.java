@@ -20,7 +20,7 @@ import java.util.List;
 import java.util.concurrent.CompletableFuture;
 
 @Validated
-@Tag(name = "product-api", description = "the api API")
+@Tag(name = "product-api", description = "the Product API")
 public interface ProductApi {
 
 
