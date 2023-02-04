@@ -10,14 +10,18 @@ import org.springframework.test.context.junit.jupiter.SpringExtension;
 import retrofit2.Response;
 import se.gewalli.polymorphic_swagger.model.AddOrder;
 import se.gewalli.polymorphic_swagger.model.AddProduct;
+import se.gewalli.polymorphic_swagger.model.AddProduct2;
 import se.gewalli.polymorphic_swagger.model.AddProductToOrder;
 import se.gewalli.polymorphic_swagger.model.CreateCustomer;
 import se.gewalli.polymorphic_swagger.model.CustomerModel;
 import se.gewalli.polymorphic_swagger.model.OrderModel;
 import se.gewalli.polymorphic_swagger.model.ProductModel;
+import se.gewalli.polymorphic_swagger.model.ProductModelV2;
 
+import java.math.BigDecimal;
 import java.math.BigInteger;
 import java.util.List;
+import java.util.Map;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
@@ -57,6 +61,23 @@ public class HttpRequestTest {
         Response<List<ProductModel>> exchange = products.list().execute();
         assertEquals(HttpStatus.OK.value(), exchange.code());
         assertTrue(exchange.body().size() >= 2);
+    }
+
+    @Test
+    public void testCanCreateProduct2sAndGetIt() throws Exception {
+        BigInteger id = products.post(new AddProduct2()
+                .cost(new BigDecimal(10))
+                .name("product1")
+                .properties(Map.of(
+                        "Weight", "0.92kg",
+                        "Length", "250cm",
+                        "Width", "150cm")))
+                .execute().body().getId();
+        Response<ProductModel> exchange = products.get(id).execute();
+        assertEquals(HttpStatus.OK.value(), exchange.code());
+        assertEquals("product1", exchange.body().getName().get());
+        ProductModelV2 model=(ProductModelV2)exchange.body();
+        assertTrue(model.getProperties().isPresent()); 
     }
 
     @Test

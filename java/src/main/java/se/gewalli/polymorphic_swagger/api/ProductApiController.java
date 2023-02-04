@@ -10,10 +10,12 @@ import se.gewalli.polymorphic_swagger.commands.Command;
 import se.gewalli.polymorphic_swagger.data.Repository;
 import se.gewalli.polymorphic_swagger.data.UUIDUtils;
 import se.gewalli.polymorphic_swagger.model.AddProduct;
+import se.gewalli.polymorphic_swagger.model.AddProduct2;
 import se.gewalli.polymorphic_swagger.model.ProductModel;
 import se.gewalli.polymorphic_swagger.commands.AddProductCommand;
 import java.math.BigInteger;
 import java.util.List;
+import java.util.Map;
 import java.util.UUID;
 import java.util.concurrent.CompletableFuture;
 
@@ -34,8 +36,9 @@ public class ProductApiController implements ProductApi {
 
         @Override
         public CompletableFuture<ResponseEntity<ProductModel>> addProduct(@Valid AddProduct body) {
+                Map<String,String> properties = body instanceof AddProduct2? ((AddProduct2)body ).getProperties():Map.of();
                 Command command = new AddProductCommand(UUID.randomUUID(), 0, body.getCost().intValue(),
-                                body.getName());
+                                body.getName(), properties);
                 return commandsHandler.handle(command)
                                 .thenApply(result -> result.fold(
                                                 len -> new ResponseEntity<>(

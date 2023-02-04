@@ -10,6 +10,7 @@ import se.gewalli.polymorphic_swagger.entities.Product;
 import se.gewalli.polymorphic_swagger.model.CustomerModel;
 import se.gewalli.polymorphic_swagger.model.OrderModel;
 import se.gewalli.polymorphic_swagger.model.ProductModel;
+import se.gewalli.polymorphic_swagger.model.ProductModelV2;
 
 public class Mappers {
     public static OrderModel mapToOrderModel(Order order) {
@@ -20,12 +21,19 @@ public class Mappers {
                 .products(order.products().stream().map(Mappers::mapToProductModel).toList());
     }
 
-    public static ProductModel mapToProductModel(Product product) {
-        return new ProductModel()
+    private static ProductModel mapToProductModel(Product product, ProductModel destination) {
+        return destination
                 .cost(product.cost())
                 .id(UUIDUtils.convertToBigInteger(product.id()))
                 .name(product.name())
                 .version(String.valueOf(product.version()));
+    }
+
+    public static ProductModel mapToProductModel(Product product) {
+        if (product.hasProperties()){
+            return mapToProductModel(product, new ProductModelV2().properties(product.properties()));
+        }
+        return mapToProductModel(product, new ProductModel());
     }
 
     public static CustomerModel mapToCustomerModel(Customer customer) {
