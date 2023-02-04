@@ -1,0 +1,9 @@
+groupId: se.gewalli
+artifactId: polymorphic_swagger_api
+async: true
+legacyDiscriminatorBehavior: false
+basePackage: se.gewalli.polymorphic_swagger
+apiPackage: se.gewalli.polymorphic_swagger.api
+modelPackage: se.gewalli.polymorphic_swagger.model
+invokerPackage: se.gewalli.polymorphic_swagger.api
+configPackage: se.gewalli.polymorphic_swagger.configuration

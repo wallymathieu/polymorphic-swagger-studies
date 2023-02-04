@@ -1,0 +1,613 @@
+openapi: 3.0.1
+info:
+  contact:
+    email: developers@somecompany.com
+    name: Dev
+    url: https://somecompany.com
+  description: ""
+  title: Polymorpic Swagger
+  version: 1.0.0
+servers:
+- url: /
+paths:
+  /api/v1/customers:
+    get:
+      responses:
+        "200":
+          content:
+            text/plain:
+              schema:
+                items:
+                  $ref: '#/components/schemas/CustomerModel'
+                type: array
+            application/json:
+              schema:
+                items:
+                  $ref: '#/components/schemas/CustomerModel'
+                type: array
+            text/json:
+              schema:
+                items:
+                  $ref: '#/components/schemas/CustomerModel'
+                type: array
+          description: Success
+      summary: ""
+      tags:
+      - Customers
+      x-accepts: application/json
+      x-tags:
+      - tag: Customers
+    post:
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CreateCustomer'
+          text/json:
+            schema:
+              $ref: '#/components/schemas/CreateCustomer'
+          application/*+json:
+            schema:
+              $ref: '#/components/schemas/CreateCustomer'
+        description: ""
+      responses:
+        "400":
+          content:
+            text/plain:
+              example:
+                lastname: The Lastname field is required.
+                firstname: The Firstname field is required.
+              schema:
+                additionalProperties:
+                  type: string
+                type: object
+            application/json:
+              example:
+                lastname: The Lastname field is required.
+                firstname: The Firstname field is required.
+              schema:
+                additionalProperties:
+                  type: string
+                type: object
+            text/json:
+              example:
+                lastname: The Lastname field is required.
+                firstname: The Firstname field is required.
+              schema:
+                additionalProperties:
+                  type: string
+                type: object
+          description: Bad Request
+      summary: ""
+      tags:
+      - Customers
+      x-content-type: application/json
+      x-accepts: application/json
+      x-tags:
+      - tag: Customers
+  /api/v1/customers/{id}:
+    get:
+      parameters:
+      - description: ""
+        explode: false
+        in: path
+        name: id
+        required: true
+        schema:
+          format: int32
+          type: integer
+        style: simple
+      responses:
+        "404":
+          content:
+            text/plain:
+              schema:
+                $ref: '#/components/schemas/ProblemDetails'
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ProblemDetails'
+            text/json:
+              schema:
+                $ref: '#/components/schemas/ProblemDetails'
+          description: Not Found
+        "200":
+          content:
+            text/plain:
+              schema:
+                $ref: '#/components/schemas/CustomerModel'
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CustomerModel'
+            text/json:
+              schema:
+                $ref: '#/components/schemas/CustomerModel'
+          description: Success
+      summary: ""
+      tags:
+      - Customers
+      x-accepts: application/json
+      x-tags:
+      - tag: Customers
+  /api/v1/orders:
+    get:
+      responses:
+        "200":
+          content:
+            text/plain:
+              schema:
+                items:
+                  $ref: '#/components/schemas/OrderModel'
+                type: array
+            application/json:
+              schema:
+                items:
+                  $ref: '#/components/schemas/OrderModel'
+                type: array
+            text/json:
+              schema:
+                items:
+                  $ref: '#/components/schemas/OrderModel'
+                type: array
+          description: Success
+      tags:
+      - Orders
+      x-accepts: application/json
+      x-tags:
+      - tag: Orders
+    post:
+      description: ""
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/AddOrder'
+          text/json:
+            schema:
+              $ref: '#/components/schemas/AddOrder'
+          application/*+json:
+            schema:
+              $ref: '#/components/schemas/AddOrder'
+        description: ""
+      responses:
+        "400":
+          content:
+            text/plain:
+              example:
+                customer: The Customer field is required.
+              schema:
+                additionalProperties:
+                  type: string
+                type: object
+            application/json:
+              example:
+                customer: The Customer field is required.
+              schema:
+                additionalProperties:
+                  type: string
+                type: object
+            text/json:
+              example:
+                customer: The Customer field is required.
+              schema:
+                additionalProperties:
+                  type: string
+                type: object
+          description: Bad Request
+      summary: ""
+      tags:
+      - Orders
+      x-content-type: application/json
+      x-accepts: application/json
+      x-tags:
+      - tag: Orders
+  /api/v1/orders/{id}:
+    get:
+      parameters:
+      - explode: false
+        in: path
+        name: id
+        required: true
+        schema:
+          format: int32
+          type: integer
+        style: simple
+      responses:
+        "404":
+          content:
+            text/plain:
+              schema:
+                $ref: '#/components/schemas/ProblemDetails'
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ProblemDetails'
+            text/json:
+              schema:
+                $ref: '#/components/schemas/ProblemDetails'
+          description: Not Found
+        "200":
+          content:
+            text/plain:
+              schema:
+                $ref: '#/components/schemas/OrderModel'
+            application/json:
+              schema:
+                $ref: '#/components/schemas/OrderModel'
+            text/json:
+              schema:
+                $ref: '#/components/schemas/OrderModel'
+          description: Success
+      tags:
+      - Orders
+      x-accepts: application/json
+      x-tags:
+      - tag: Orders
+  /api/v1/orders/{id}/products:
+    post:
+      description: ""
+      parameters:
+      - description: order id
+        explode: false
+        in: path
+        name: id
+        required: true
+        schema:
+          format: int32
+          type: integer
+        style: simple
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/AddProductToOrder'
+          text/json:
+            schema:
+              $ref: '#/components/schemas/AddProductToOrder'
+          application/*+json:
+            schema:
+              $ref: '#/components/schemas/AddProductToOrder'
+        description: ""
+      responses:
+        "400":
+          content:
+            text/plain:
+              example:
+                productId: The ProductId field is required.
+              schema:
+                additionalProperties:
+                  type: string
+                type: object
+            application/json:
+              example:
+                productId: The ProductId field is required.
+              schema:
+                additionalProperties:
+                  type: string
+                type: object
+            text/json:
+              example:
+                productId: The ProductId field is required.
+              schema:
+                additionalProperties:
+                  type: string
+                type: object
+          description: Bad Request
+      summary: ""
+      tags:
+      - Orders
+      x-content-type: application/json
+      x-accepts: application/json
+      x-tags:
+      - tag: Orders
+  /api/v1/products:
+    get:
+      responses:
+        "200":
+          content:
+            text/plain:
+              schema:
+                items:
+                  $ref: '#/components/schemas/_api_v1_products_get_200_response_inner'
+                type: array
+            application/json:
+              schema:
+                items:
+                  $ref: '#/components/schemas/_api_v1_products_get_200_response_inner'
+                type: array
+            text/json:
+              schema:
+                items:
+                  $ref: '#/components/schemas/_api_v1_products_get_200_response_inner'
+                type: array
+          description: Success
+      summary: ""
+      tags:
+      - Products
+      x-accepts: application/json
+      x-tags:
+      - tag: Products
+    post:
+      description: "You could for instance add products using\r\n```JSON\r\n{\r\n\
+        \  \"cost\":124, \"name\": \"tea\"\r\n}\r\n```"
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/_api_v1_products_get_request'
+          text/json:
+            schema:
+              $ref: '#/components/schemas/_api_v1_products_get_request'
+          application/*+json:
+            schema:
+              $ref: '#/components/schemas/_api_v1_products_get_request'
+        description: ""
+      responses:
+        "200":
+          description: The product was added successfully
+        "400":
+          content:
+            text/plain:
+              example:
+                cost: The field Cost must be between 0.1 and 1000000.
+                name: The Name field is required.
+              schema:
+                additionalProperties:
+                  type: string
+                type: object
+            application/json:
+              example:
+                cost: The field Cost must be between 0.1 and 1000000.
+                name: The Name field is required.
+              schema:
+                additionalProperties:
+                  type: string
+                type: object
+            text/json:
+              example:
+                cost: The field Cost must be between 0.1 and 1000000.
+                name: The Name field is required.
+              schema:
+                additionalProperties:
+                  type: string
+                type: object
+          description: ""
+      summary: Add product to available products
+      tags:
+      - Products
+      x-content-type: application/json
+      x-accepts: application/json
+      x-tags:
+      - tag: Products
+  /api/v1/products/{id}:
+    get:
+      parameters:
+      - description: ""
+        explode: false
+        in: path
+        name: id
+        required: true
+        schema:
+          format: int32
+          type: integer
+        style: simple
+      responses:
+        "404":
+          content:
+            text/plain:
+              schema:
+                $ref: '#/components/schemas/ProblemDetails'
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ProblemDetails'
+            text/json:
+              schema:
+                $ref: '#/components/schemas/ProblemDetails'
+          description: Not Found
+        "200":
+          content:
+            text/plain:
+              schema:
+                $ref: '#/components/schemas/_api_v1_products_get_200_response_inner'
+            application/json:
+              schema:
+                $ref: '#/components/schemas/_api_v1_products_get_200_response_inner'
+            text/json:
+              schema:
+                $ref: '#/components/schemas/_api_v1_products_get_200_response_inner'
+          description: Success
+      summary: ""
+      tags:
+      - Products
+      x-accepts: application/json
+      x-tags:
+      - tag: Products
+components:
+  schemas:
+    AddOrder:
+      additionalProperties: false
+      example:
+        customer: 0
+      properties:
+        customer:
+          description: ""
+          format: int32
+          type: integer
+      required:
+      - customer
+      type: object
+    AddProduct:
+      additionalProperties: false
+      discriminator:
+        mapping:
+          AddProduct: '#/components/schemas/AddProduct'
+          AddProduct2: '#/components/schemas/AddProduct2'
+        propertyName: version
+      properties:
+        version:
+          type: string
+        cost:
+          description: ""
+          format: currency
+          maximum: 1000000
+          minimum: 0.1
+          type: number
+        name:
+          description: ""
+          maxLength: 60
+          minLength: 3
+          type: string
+      required:
+      - cost
+      - name
+      - version
+      type: object
+    AddProduct2:
+      additionalProperties: false
+      allOf:
+      - $ref: '#/components/schemas/AddProduct'
+      properties:
+        properties:
+          additionalProperties:
+            type: string
+          description: ""
+          type: object
+      required:
+      - properties
+      type: object
+    AddProductToOrder:
+      additionalProperties: false
+      example:
+        productId: 0
+      properties:
+        productId:
+          format: int32
+          type: integer
+      required:
+      - productId
+      type: object
+    CreateCustomer:
+      additionalProperties: false
+      example:
+        firstname: firstname
+        lastname: lastname
+      properties:
+        lastname:
+          description: ""
+          maxLength: 60
+          minLength: 3
+          type: string
+        firstname:
+          description: ""
+          maxLength: 60
+          minLength: 3
+          type: string
+      required:
+      - firstname
+      - lastname
+      type: object
+    CustomerModel:
+      additionalProperties: false
+      example:
+        firstname: firstname
+        id: 0
+        lastname: lastname
+      properties:
+        id:
+          format: int32
+          type: integer
+        lastname:
+          nullable: true
+          type: string
+        firstname:
+          nullable: true
+          type: string
+      type: object
+    OrderModel:
+      additionalProperties: false
+      example:
+        id: 0
+        orderDate: 2000-01-23T04:56:07.000+00:00
+        customer:
+          firstname: firstname
+          id: 0
+          lastname: lastname
+        products:
+        - null
+        - null
+      properties:
+        id:
+          format: int32
+          type: integer
+        customer:
+          $ref: '#/components/schemas/CustomerModel'
+        orderDate:
+          format: date-time
+          type: string
+        products:
+          items:
+            $ref: '#/components/schemas/_api_v1_products_get_200_response_inner'
+          nullable: true
+          type: array
+      type: object
+    ProblemDetails:
+      additionalProperties: {}
+      properties:
+        type:
+          nullable: true
+          type: string
+        title:
+          nullable: true
+          type: string
+        status:
+          format: int32
+          nullable: true
+          type: integer
+        detail:
+          nullable: true
+          type: string
+        instance:
+          nullable: true
+          type: string
+      type: object
+    ProductModel:
+      additionalProperties: false
+      discriminator:
+        mapping:
+          ProductModel: '#/components/schemas/ProductModel'
+          ProductModelV2: '#/components/schemas/ProductModelV2'
+        propertyName: version
+      properties:
+        version:
+          type: string
+        id:
+          format: int32
+          type: integer
+        cost:
+          format: float
+          type: number
+        name:
+          nullable: true
+          type: string
+      required:
+      - version
+      type: object
+    ProductModelV2:
+      additionalProperties: false
+      allOf:
+      - $ref: '#/components/schemas/ProductModel'
+      properties:
+        properties:
+          additionalProperties:
+            type: string
+          nullable: true
+          type: object
+      type: object
+    _api_v1_products_get_200_response_inner:
+      oneOf:
+      - $ref: '#/components/schemas/ProductModel'
+      - $ref: '#/components/schemas/ProductModelV2'
+      x-one-of-name: ApiV1ProductsGet200ResponseInner
+    _api_v1_products_get_request:
+      oneOf:
+      - $ref: '#/components/schemas/AddProduct'
+      - $ref: '#/components/schemas/AddProduct2'
+      x-one-of-name: ApiV1ProductsGetRequest
